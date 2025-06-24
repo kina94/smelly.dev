@@ -8,11 +8,10 @@ export async function GET() {
 
     let snapshot;
     try {
-      // createdAt 필드로 정렬 시도
-      snapshot = await antipatternsRef.orderBy("createdAt", "desc").limit(10).get();
-      console.log("createdAt 필드로 정렬 성공");
+      snapshot = await antipatternsRef.orderBy("updatedAt", "desc").limit(10).get();
+      console.log("updatedAt 필드로 정렬 성공");
     } catch (sortError) {
-      console.log("createdAt 필드 정렬 실패, 정렬 없이 조회:", sortError);
+      console.log("updatedAt 필드 정렬 실패, 정렬 없이 조회:", sortError);
       // 정렬 실패 시 모든 문서 조회
       snapshot = await antipatternsRef.limit(10).get();
     }

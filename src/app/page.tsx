@@ -97,10 +97,17 @@ export default function Home() {
   };
 
   // 날짜 포맷팅 함수
-  const formatDate = (date: Date | string | any) => {
+  const formatDate = (date: Date | string | unknown) => {
     // Firebase Timestamp 객체 처리
-    if (date && typeof date === "object" && date.toDate) {
-      return date.toDate().toLocaleDateString("ko-KR");
+    if (date && typeof date === "object" && date !== null) {
+      const dateObj = date as { _seconds?: number; _nanoseconds?: number; toDate?: () => Date };
+      if (dateObj._seconds) {
+        // Firebase Timestamp 객체
+        return new Date(dateObj._seconds * 1000).toLocaleDateString("ko-KR");
+      } else if (dateObj.toDate) {
+        // Firebase Timestamp 객체 (toDate 메서드가 있는 경우)
+        return dateObj.toDate().toLocaleDateString("ko-KR");
+      }
     }
 
     // 문자열인 경우

@@ -84,7 +84,6 @@ export async function POST() {
       tags: Array.isArray(antipattern.tags) ? antipattern.tags : [],
       type: antipattern.type || "기타",
       difficulty: antipattern.difficulty || "중급",
-      createdAt: new Date(),
       updatedAt: new Date(),
     };
 

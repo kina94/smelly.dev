@@ -10,8 +10,7 @@ export interface Antipattern {
   tags: string[];
   type: "프론트엔드" | "백엔드" | "데이터베이스" | "기타";
   difficulty: "초급" | "중급" | "고급";
-  createdAt?: Date | any; // Firebase Timestamp도 허용
-  updatedAt?: Date | any; // Firebase Timestamp도 허용
+  updatedAt?: Date;
 }
 
 export interface AntipatternResponse {
