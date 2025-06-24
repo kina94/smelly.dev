@@ -24,6 +24,12 @@ export default function Home() {
 
       // 응답 상태 확인
       if (!response.ok) {
+        const errorData = await response.json();
+        if (response.status === 409) {
+          // 중복 오류인 경우
+          setMessage(`⚠️ ${errorData.error} 다시 시도해주세요.`);
+          return;
+        }
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
@@ -150,8 +156,22 @@ export default function Home() {
 
         {/* 메시지 */}
         {message && (
-          <div className="text-center mb-6 p-4 bg-white rounded-lg shadow">
-            <p className="text-gray-700">{message}</p>
+          <div
+            className={`text-center mb-6 p-4 rounded-lg shadow ${
+              message.includes("⚠️")
+                ? "bg-yellow-50 border border-yellow-200"
+                : message.includes("❌")
+                ? "bg-red-50 border border-red-200"
+                : "bg-white"
+            }`}
+          >
+            <p
+              className={`${
+                message.includes("⚠️") ? "text-yellow-800" : message.includes("❌") ? "text-red-700" : "text-gray-700"
+              }`}
+            >
+              {message}
+            </p>
           </div>
         )}
 
