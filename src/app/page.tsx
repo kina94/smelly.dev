@@ -1,101 +1,237 @@
-import Image from "next/image";
+"use client";
+
+import { useState } from "react";
+import { Antipattern } from "@/shared/types";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import remarkBreaks from "remark-breaks";
+import rehypeRaw from "rehype-raw";
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const [loading, setLoading] = useState(false);
+  const [antipatterns, setAntipatterns] = useState<Antipattern[]>([]);
+  const [message, setMessage] = useState("");
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+  // 안티패턴 생성
+  const createAntipattern = async () => {
+    setLoading(true);
+    setMessage("");
+
+    try {
+      const response = await fetch("/api/antipattern/create", {
+        method: "POST",
+      });
+
+      // 응답 상태 확인
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      // 응답 텍스트 확인
+      const responseText = await response.text();
+      console.log("Raw response:", responseText);
+
+      // JSON 파싱
+      let data;
+      try {
+        data = JSON.parse(responseText);
+      } catch (parseError) {
+        console.error("JSON parse error:", parseError);
+
+        // 두 번째 시도: 응답에서 JSON 부분만 추출
+        try {
+          const jsonMatch = responseText.match(/\{[\s\S]*\}/);
+          if (jsonMatch) {
+            data = JSON.parse(jsonMatch[0]);
+            console.log("JSON 추출 후 파싱 성공:", data);
+          } else {
+            setMessage(`❌ JSON 파싱 오류: ${responseText.substring(0, 200)}...`);
+            return;
+          }
+        } catch (secondError) {
+          console.error("두 번째 파싱 시도도 실패:", secondError);
+          setMessage(`❌ JSON 파싱 오류: ${responseText.substring(0, 200)}...`);
+          return;
+        }
+      }
+
+      if (data.success) {
+        setMessage("✅ 안티패턴이 성공적으로 생성되었습니다!");
+        // 새로 생성된 안티패턴을 목록에 추가
+        if (data.antipattern) {
+          setAntipatterns((prev) => [data.antipattern, ...prev]);
+        }
+      } else {
+        setMessage(`❌ 오류: ${data.error}`);
+      }
+    } catch (error) {
+      console.error("Fetch error:", error);
+      setMessage(`❌ 네트워크 오류: ${error}`);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // 안티패턴 목록 조회
+  const fetchAntipatterns = async () => {
+    setLoading(true);
+    setMessage("");
+
+    try {
+      const response = await fetch("/api/antipattern/list");
+      const data = await response.json();
+
+      console.log("API 응답:", data);
+      if (data.success) {
+        console.log("불러온 안티패턴 개수:", data.antipatterns?.length);
+        setAntipatterns(data.antipatterns || []);
+        setMessage(`📋 총 ${data.antipatterns?.length || 0}개의 안티패턴을 불러왔습니다.`);
+      } else {
+        setMessage(`❌ 오류: ${data.error}`);
+      }
+    } catch (error) {
+      setMessage(`❌ 네트워크 오류: ${error}`);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // 날짜 포맷팅 함수
+  const formatDate = (date: Date | string | any) => {
+    // Firebase Timestamp 객체 처리
+    if (date && typeof date === "object" && date.toDate) {
+      return date.toDate().toLocaleDateString("ko-KR");
+    }
+
+    // 문자열인 경우
+    if (typeof date === "string") {
+      return new Date(date).toLocaleDateString("ko-KR");
+    }
+
+    // Date 객체인 경우
+    if (date instanceof Date) {
+      return date.toLocaleDateString("ko-KR");
+    }
+
+    // 기타 경우
+    return "날짜 없음";
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-50 py-8">
+      <div className="max-w-4xl mx-auto px-4">
+        <h1 className="text-3xl font-bold text-center mb-8 text-gray-800">🚫 안티패턴 생성기</h1>
+
+        {/* 버튼 영역 */}
+        <div className="flex gap-4 justify-center mb-8">
+          <button
+            onClick={createAntipattern}
+            disabled={loading}
+            className="bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white px-6 py-3 rounded-lg font-medium transition-colors"
           >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+            {loading ? "🔄 생성 중..." : "✨ 새 안티패턴 생성"}
+          </button>
+
+          <button
+            onClick={fetchAntipatterns}
+            disabled={loading}
+            className="bg-green-600 hover:bg-green-700 disabled:bg-gray-400 text-white px-6 py-3 rounded-lg font-medium transition-colors"
           >
-            Read our docs
-          </a>
+            {loading ? "🔄 로딩 중..." : "📋 목록 불러오기"}
+          </button>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+
+        {/* 메시지 */}
+        {message && (
+          <div className="text-center mb-6 p-4 bg-white rounded-lg shadow">
+            <p className="text-gray-700">{message}</p>
+          </div>
+        )}
+
+        {/* 안티패턴 목록 */}
+        {antipatterns.length > 0 && (
+          <div className="space-y-6">
+            <h2 className="text-2xl font-semibold text-gray-800">📚 안티패턴 목록</h2>
+            {antipatterns.map((antipattern, index) => (
+              <div key={antipattern.id || index} className="bg-white rounded-lg shadow-md p-6">
+                <div className="flex items-start justify-between mb-4">
+                  <h3 className="text-xl font-semibold text-gray-800">{antipattern.title}</h3>
+                  <div className="flex gap-2">
+                    <span className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">{antipattern.type}</span>
+                    <span className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">
+                      {antipattern.difficulty}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="space-y-4">
+                  <div>
+                    <h4 className="font-medium text-red-600 mb-2">❌ 문제점</h4>
+                    <div className="[&>h1]:text-2xl [&>h1]:font-bold [&>h1]:mb-4 [&>h2]:text-xl [&>h2]:font-semibold [&>h2]:mb-3 [&>h3]:text-lg [&>h3]:font-medium [&>h3]:mb-2 [&>p]:mb-2 [&>strong]:font-bold [&>code]:bg-gray-100 [&>code]:px-1 [&>code]:py-0.5 [&>code]:rounded [&>code]:text-sm">
+                      <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
+                        {antipattern.whyWrong.replace(/\\n/g, "\n")}
+                      </ReactMarkdown>
+                    </div>
+                  </div>
+
+                  <div>
+                    <h4 className="font-medium text-green-600 mb-2">✅ 해결 방법</h4>
+                    <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
+                      {antipattern.howToFix.replace(/\\n/g, "\n")}
+                    </ReactMarkdown>
+                  </div>
+
+                  <div>
+                    <h4 className="font-medium text-gray-600 mb-2">📝 요약</h4>
+                    <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
+                      {antipattern.summary.replace(/\\n/g, "\n")}
+                    </ReactMarkdown>
+                  </div>
+
+                  {antipattern.beforeCode && (
+                    <div>
+                      <h4 className="font-medium text-red-600 mb-2">🚫 문제 코드</h4>
+                      <pre className="bg-red-50 p-3 rounded text-sm overflow-x-auto">
+                        <code>
+                          <ReactMarkdown remarkPlugins={[remarkGfm, remarkBreaks]}>
+                            {antipattern.beforeCode}
+                          </ReactMarkdown>
+                        </code>
+                      </pre>
+                    </div>
+                  )}
+
+                  {antipattern.afterCode && (
+                    <div>
+                      <h4 className="font-medium text-green-600 mb-2">✅ 개선 코드</h4>
+                      <pre className="bg-green-50 p-3 rounded text-sm overflow-x-auto">
+                        <ReactMarkdown remarkPlugins={[remarkGfm, remarkBreaks]}>{antipattern.afterCode}</ReactMarkdown>
+                      </pre>
+                    </div>
+                  )}
+
+                  {antipattern.tags.length > 0 && (
+                    <div>
+                      <h4 className="font-medium text-gray-600 mb-2">🏷️ 태그</h4>
+                      <div className="flex gap-2 flex-wrap">
+                        {antipattern.tags.map((tag, tagIndex) => (
+                          <span key={tagIndex} className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded">
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="text-xs text-gray-500">
+                    업데이트: {antipattern.updatedAt ? formatDate(antipattern.updatedAt) : "날짜 없음"}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

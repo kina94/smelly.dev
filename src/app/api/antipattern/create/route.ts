@@ -1,0 +1,120 @@
+import { NextResponse } from "next/server";
+import { adminDb } from "@/shared/config/firebase-admin";
+import { GoogleGenAI } from "@google/genai";
+
+const ai = new GoogleGenAI({
+  apiKey: process.env.GOOGLE_AI_KEY,
+});
+
+export async function POST() {
+  try {
+    // Gemini API 호출
+    const response = await ai.models.generateContent({
+      model: "gemini-2.5-flash",
+      contents: `너는 프론트엔드 안티패턴 학습 콘텐츠를 생성하는 AI야.
+아래 템플릿에 맞게 안티패턴 콘텐츠를 아래 형식으로 한 개만 만들어줘. 바로 파싱할거니까 코드블록 없이 응답해줘.
+가장 중요한건 이전에 생성했던거랑 겹치지 않게 중복 없이 만들어줘.
+
+{
+  "id": "오늘의 날짜와 시간",
+  "title": "안티패턴 제목 (이모지 포함 가능)",
+  "whyWrong": "왜 이 패턴이 문제인지 설명",
+  "howToFix": "어떻게 수정해야 하는지 설명",
+  "summary": "간단한 요약",
+  "beforeCode": "문제가 있는 코드 예시",
+  "afterCode": "수정된 코드 예시",
+  "links": ["관련 링크1", "관련 링크2"],
+  "tags": ["JavaScript","TypeScript","React","CSS","HTML/접근성","UX","성능","보안","상태관리","테스트","빌드&번들링","애니메이션/UI","컴포넌트","네이밍&구조"],
+  "type": "프론트엔드|백엔드|데이터베이스|기타",
+  "difficulty": "초급|중급|고급",
+  "updatedAt": "오늘의 날짜와 시간"
+}
+
+내부 콘텐츠는 마크다운 문법으로 만들어.
+내용은 tags를 기반으로 실제 프론트엔드 실무에 흔히 있는 문제를 중심으로 유익하게 만들어줘.
+코드 예시는 React, JS 중심이며, 보안/접근성/렌더링/UX 등 여러 주제를 고루 포함할 수 있어야 해.
+이러한 현상이 왜 일어나는지 디테일하게 접근해줘. (예시: translate는 레이아웃을 발생시키지 않고 리페인트만 발생시키기 때문에 position보다 translate를 사용하는 것이 더 빠릅니다.)
+퀄리티가 중요하니까 신경써서 생성해줘.`,
+    });
+
+    console.log("Response text:", response.text, typeof response.text);
+
+    const extractedJSON = response.text;
+    let antipattern;
+
+    if (extractedJSON) {
+      try {
+        // 줄바꿈과 공백 정리
+        const cleanedJSON = extractedJSON
+          .replace(/\n/g, "\\n") // 줄바꿈을 이스케이프
+          .replace(/\r/g, "\\r") // 캐리지 리턴을 이스케이프
+          .replace(/\t/g, "\\t"); // 탭을 이스케이프
+
+        antipattern = JSON.parse(cleanedJSON);
+        console.log("성공적으로 JSON 파싱됨:", antipattern);
+      } catch (error) {
+        console.error("추출된 JSON 파싱 실패:", error);
+        console.error("추출된 JSON:", extractedJSON);
+
+        // 두 번째 시도: 원본 텍스트에서 직접 파싱
+        try {
+          antipattern = JSON.parse(extractedJSON);
+          console.log("두 번째 시도로 JSON 파싱 성공:", antipattern);
+        } catch (secondError) {
+          console.error("두 번째 파싱 시도도 실패:", secondError);
+          antipattern = null;
+        }
+      }
+    } else {
+      console.error("JSON 추출 실패");
+      console.error("원본 응답:", extractedJSON);
+      antipattern = null;
+    }
+
+    // 필수 필드 검증 및 기본값 설정
+    const validatedAntipattern = {
+      id: antipattern.id || new Date().toISOString(),
+      title: antipattern.title || "제목 없음",
+      whyWrong: antipattern.whyWrong || "설명 없음",
+      howToFix: antipattern.howToFix || "해결 방법 없음",
+      summary: antipattern.summary || "요약 없음",
+      beforeCode: antipattern.beforeCode || "",
+      afterCode: antipattern.afterCode || "",
+      links: Array.isArray(antipattern.links) ? antipattern.links : [],
+      tags: Array.isArray(antipattern.tags) ? antipattern.tags : [],
+      type: antipattern.type || "기타",
+      difficulty: antipattern.difficulty || "중급",
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+
+    // Firebase에 저장
+
+    const antipatternRef = adminDb.collection("antipatterns");
+    await antipatternRef.add(validatedAntipattern);
+
+    return NextResponse.json({
+      success: true,
+      antipattern: validatedAntipattern,
+      message: "안티패턴이 성공적으로 생성되고 저장되었습니다.",
+    });
+  } catch (error) {
+    console.error("Error:", error);
+
+    // Gemini API 에러 처리
+    if (error && typeof error === "object" && "message" in error) {
+      const geminiError = error as { message: string };
+      if (geminiError.message?.includes("quota") || geminiError.message?.includes("limit")) {
+        return NextResponse.json(
+          {
+            success: false,
+            error: "Gemini API 할당량이 초과되었습니다. 계정 설정을 확인해주세요.",
+          },
+          { status: 429 },
+        );
+      }
+    }
+
+    return NextResponse.json({ success: false, error: "안티패턴 생성 중 오류가 발생했습니다." }, { status: 500 });
+  }
+}
