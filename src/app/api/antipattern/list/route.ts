@@ -35,6 +35,9 @@ export async function GET() {
     });
   } catch (error) {
     console.error("Error:", error);
-    return NextResponse.json({ success: false, error: "안티패턴 조회 중 오류가 발생했습니다." }, { status: 500 });
+    return NextResponse.json(
+      { success: false, error: "안티패턴 조회 중 오류가 발생했습니다.", errorMessage: error },
+      { status: 500 },
+    );
   }
 }
