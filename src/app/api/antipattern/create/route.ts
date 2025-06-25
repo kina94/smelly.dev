@@ -15,7 +15,7 @@ const ai = new GoogleGenAI({
 });
 
 // 에러 처리
-function handleError(error: unknown): NextResponse {
+const handleError = (error: unknown): NextResponse => {
   if (error && typeof error === "object" && "message" in error) {
     const geminiError = error as { message: string };
     if (geminiError.message?.includes("quota") || geminiError.message?.includes("limit")) {
@@ -33,7 +33,7 @@ function handleError(error: unknown): NextResponse {
     { success: false, error: "안티패턴 생성 중 오류가 발생했습니다.", errorMessage: error },
     { status: 500 },
   );
-}
+};
 
 export async function POST() {
   try {

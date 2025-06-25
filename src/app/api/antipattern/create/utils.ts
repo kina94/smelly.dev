@@ -2,7 +2,7 @@ import { adminDb } from "@/shared/config/firebase-admin";
 import { AntipatternData, GeneratedAntipattern, ValidatedAntipattern, DuplicateCheckResult } from "./types";
 
 // 기존 안티패턴 조회
-export async function getExistingAntipatterns(): Promise<AntipatternData[]> {
+export const getExistingAntipatterns = async (): Promise<AntipatternData[]> => {
   const existingAntipatternsRef = adminDb.collection("antipatterns");
   const existingSnapshot = await existingAntipatternsRef.orderBy("updatedAt", "desc").limit(20).get();
 
@@ -14,10 +14,10 @@ export async function getExistingAntipatterns(): Promise<AntipatternData[]> {
       tags: data.tags || [],
     };
   });
-}
+};
 
 // 태그 사용 빈도 분석
-export function analyzeTagFrequency(antipatterns: AntipatternData[]): string[] {
+export const analyzeTagFrequency = (antipatterns: AntipatternData[]): string[] => {
   const recentTags = antipatterns.slice(0, 5).flatMap((ap) => ap.tags);
   const tagFrequency: { [key: string]: number } = {};
 
@@ -28,10 +28,10 @@ export function analyzeTagFrequency(antipatterns: AntipatternData[]): string[] {
   return Object.entries(tagFrequency)
     .filter(([, count]) => count >= 3)
     .map(([tag]) => tag);
-}
+};
 
 // AI 프롬프트 생성
-export function createPrompt(existingAntipatterns: AntipatternData[], overusedTags: string[]): string {
+export const createPrompt = (existingAntipatterns: AntipatternData[], overusedTags: string[]): string => {
   const existingInfo = existingAntipatterns
     .map((ap, index) => `${index + 1}. 제목: ${ap.title}, 요약: ${ap.summary}, 태그: ${ap.tags.join(", ")}`)
     .join("\n");
@@ -70,10 +70,10 @@ ${existingInfo}
 퀄리티가 중요하니까 신경써서 생성해줘.
 
 다시 한 번 강조하지만, 위 기존 목록과 절대 중복되지 않는 완전히 새로운 안티패턴을 만들어야 해.`;
-}
+};
 
 // AI 응답 파싱
-export function parseAIResponse(responseText: string): GeneratedAntipattern | null {
+export const parseAIResponse = (responseText: string): GeneratedAntipattern | null => {
   try {
     const cleanedJSON = responseText.replace(/\n/g, "\\n").replace(/\r/g, "\\r").replace(/\t/g, "\\t");
 
@@ -88,10 +88,10 @@ export function parseAIResponse(responseText: string): GeneratedAntipattern | nu
       return null;
     }
   }
-}
+};
 
 // 안티패턴 데이터 검증 및 기본값 설정
-export function validateAntipattern(antipattern: GeneratedAntipattern | null): ValidatedAntipattern {
+export const validateAntipattern = (antipattern: GeneratedAntipattern | null): ValidatedAntipattern => {
   return {
     id: antipattern?.id || new Date().toISOString(),
     title: antipattern?.title || "제목 없음",
@@ -106,10 +106,10 @@ export function validateAntipattern(antipattern: GeneratedAntipattern | null): V
     difficulty: antipattern?.difficulty || "중급",
     updatedAt: new Date(),
   };
-}
+};
 
 // 제목 중복 체크
-export async function checkTitleDuplicate(title: string): Promise<DuplicateCheckResult> {
+export const checkTitleDuplicate = async (title: string): Promise<DuplicateCheckResult> => {
   const titleCheckRef = adminDb.collection("antipatterns");
   const titleCheckSnapshot = await titleCheckRef.where("title", "==", title).get();
 
@@ -135,10 +135,10 @@ export async function checkTitleDuplicate(title: string): Promise<DuplicateCheck
   }
 
   return { isDuplicate: false };
-}
+};
 
 // Firebase에 저장
-export async function saveAntipattern(antipattern: ValidatedAntipattern): Promise<void> {
+export const saveAntipattern = async (antipattern: ValidatedAntipattern): Promise<void> => {
   const antipatternRef = adminDb.collection("antipatterns");
   await antipatternRef.add(antipattern);
-}
+};

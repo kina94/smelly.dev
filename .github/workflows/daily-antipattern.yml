@@ -1,0 +1,68 @@
+name: Daily Antipattern Generation
+
+on:
+  schedule:
+    - cron: "0 15 * * *" # 매일 한국시간 오전 12시 실행됨
+  workflow_dispatch: # 수동 실행도 가능하도록
+  # push:
+  # branches: [master]
+
+jobs:
+  generate-antipattern:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 8
+
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - name: Setup pnpm cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Create .env file
+        run: |
+          cat > .env << EOF
+          FIREBASE_PROJECT_ID="${{ secrets.FIREBASE_PROJECT_ID }}"
+          FIREBASE_CLIENT_EMAIL="${{ secrets.FIREBASE_CLIENT_EMAIL }}"
+          FIREBASE_PRIVATE_KEY='${{ secrets.FIREBASE_PRIVATE_KEY }}'
+          GOOGLE_AI_KEY="${{ secrets.GOOGLE_AI_KEY }}"
+          EOF
+
+      - name: Debug environment variables
+        run: |
+          echo "FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}"
+          echo "FIREBASE_CLIENT_EMAIL: ${{ secrets.FIREBASE_CLIENT_EMAIL }}"
+          echo "GOOGLE_AI_KEY: ${{ secrets.GOOGLE_AI_KEY }}"
+
+      - name: Generate and upload antipattern
+        run: pnpm run generate-antipattern
+
+      - name: Commit and push changes (if any)
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add -A
+          git diff --quiet && git diff --staged --quiet || git commit -m "🤖 Auto-generated daily antipattern [skip ci]"
+          git push
