@@ -102,7 +102,7 @@ ${existingInfo}
   "beforeCode": "문제가 있는 코드 예시",
   "afterCode": "수정된 코드 예시",
   "links": ["관련 링크1", "관련 링크2"],
-  "tags": ["JavaScript","TypeScript","React","CSS","HTML/접근성","UX","성능","보안","상태관리","테스트","빌드&번들링","애니메이션/UI","컴포넌트","네이밍&구조"],
+  "tags": ["JavaScript","TypeScript","React","CSS","HTML/접근성","UX","성능","보안","상태관리","테스트","빌드&번들링","애니메이션/UI","컴포넌트", "네이밍", "Lint/Formatter", "비동기처리", "아키텍처", "호환성", "CI/CD", "에러처리"],
   "type": "프론트엔드|백엔드|데이터베이스|기타",
   "difficulty": "초급|중급|고급",
   "updatedAt": "오늘의 날짜와 시간"
