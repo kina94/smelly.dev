@@ -1,4 +1,3 @@
 // Widget components
-export * from "./Header";
-export * from "./Sidebar";
 export * from "./Footer";
+export { default as PostCardSkeleton } from "./PostCardSkeleton";
