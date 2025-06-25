@@ -152,3 +152,6 @@ npm run generate-antipattern
 
 - **프로젝트 기획 & 개발**: 김기나
 - **콘텐츠 생성**: ChatGPT (자동화 API 기반)
+
+// ㄴ중에 글쓸때 참조
+https://dev.to/algoorgoal/nextjs-tailwindcsse-pretendard-ponteu-jeogyonghagi-1g87
