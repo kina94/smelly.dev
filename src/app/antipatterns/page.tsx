@@ -10,7 +10,7 @@ interface SearchParams {
 
 export default async function AntipatternsPage({ searchParams }: { searchParams: SearchParams }) {
   const page = parseInt(searchParams.page || "1");
-  const limit = parseInt(searchParams.limit || "10");
+  const limit = parseInt(searchParams.limit || "5");
 
   const { antipatterns, pagination } = await getAntipatterns(page, limit);
 
