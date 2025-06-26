@@ -28,7 +28,7 @@ export default function DynamicTitle() {
   return (
     <div className="max-w-4xl mx-auto">
       {pathname && pathname.startsWith("/antipatterns/") && <BackButton />}
-      <h1 className="text-left mb-12 text-hero">{title}</h1>
+      <h1 className="text-left mb-6 text-large md:mb-12 md:text-hero">{title}</h1>
     </div>
   );
 }

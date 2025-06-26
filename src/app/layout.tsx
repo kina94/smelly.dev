@@ -27,7 +27,7 @@ export default function RootLayout({
       <body className={pretendard.className}>
         <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS || ""} />
         <Header />
-        <main className="pt-24 overflow-hidden">
+        <main className="pt-16 md:pt-24 overflow-hidden">
           <div className="w-full px-4 py-8 h-full flex flex-col">
             <div className="w-full">
               <DynamicTitle />

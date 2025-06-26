@@ -4,7 +4,7 @@ import { Antipattern } from "@/shared/types";
 import { getDifficultyVariant, toDate } from "@/utils/etc";
 import dayjs from "dayjs";
 import React from "react";
-import { Badge } from "@/shared/ui";
+import { Badge, BadgeGroup } from "@/shared/ui";
 import Link from "next/link";
 
 export default function ArticlePreview({ antipattern, index }: { antipattern: Antipattern; index: number }) {
@@ -12,31 +12,27 @@ export default function ArticlePreview({ antipattern, index }: { antipattern: An
 
   return (
     <Link
-      className="block border-b border-systemBackground-border py-10 cursor-pointer transition-all duration-300 ease-in-out rounded-lg px-4 hover:translate-x-2"
+      className="block border-b border-systemBackground-border cursor-pointer transition-all duration-300 ease-in-out rounded-lg hover:translate-x-2 first:pt-0 py-6 md:py-10"
       href={`/antipatterns/${antipattern.id || ""}`}
       prefetch={true}
     >
       <div className="flex justify-between items-center">
-        <span className="text-label-secondary text-captionSmall">{date}</span>
+        <span className="text-label-secondary text-captionSmall text-xs md:text-sm">{date}</span>
         <div className="flex gap-2"></div>
       </div>
-      <div className="flex flex-col gap-2">
-        <h3 className="text-label-primary text-large break-words mt-2">
+      <div className="flex flex-col gap-1 md:gap-2">
+        <h3 className="text-label-primary text-base md:text-large break-words mt-1 md:mt-2">
           #{index}. {antipattern.title || "제목 없음"}
         </h3>
-        <span className="text-label-secondary text-bodyRegular line-clamp-2">{antipattern.summary || "요약 없음"}</span>
+        <span className="text-label-secondary text-sm md:text-bodyRegular line-clamp-2">
+          {antipattern.summary || "요약 없음"}
+        </span>
       </div>
       {/* Tags */}
       {antipattern.tags && antipattern.tags.length > 0 && (
-        <div className="flex flex-wrap gap-2 mt-3 justify-between">
-          <div className="flex flex-wrap gap-2">
-            {antipattern.tags.map((tag, index) => (
-              <Badge key={index} variant="outline" className="text-xs">
-                {tag}
-              </Badge>
-            ))}
-          </div>
-          <div className="flex gap-2">
+        <div className="flex flex-wrap gap-1 md:gap-2 mt-2 md:mt-3 justify-between">
+          <BadgeGroup badges={antipattern.tags} variant="outline" />
+          <div className="flex gap-1 md:gap-2">
             <Badge variant="default" className="text-xs">
               {antipattern.type || "기타"}
             </Badge>

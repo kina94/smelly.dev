@@ -58,7 +58,7 @@ const config: Config = {
         subheadSemibold: ["18px", { lineHeight: "24px", fontWeight: "600" }], // Semibold
         subheadMedium: ["18px", { lineHeight: "24px", fontWeight: "500" }], // Medium
         bodySemibold: ["16px", { lineHeight: "27px", fontWeight: "600" }], // Semibold
-        bodyRegular: ["16px", { lineHeight: "27px", fontWeight: "400" }], // Regular
+        bodyRegular: ["16px", { lineHeight: "28px", fontWeight: "400" }], // Regular
         captionMedium: ["14px", { lineHeight: "20px", fontWeight: "500" }], // Medium
         captionRegular: ["14px", { lineHeight: "20px", fontWeight: "400" }], // Regular
         captionSmall: ["12px", { lineHeight: "16px", fontWeight: "400" }], // Regular
