@@ -2,7 +2,7 @@ import React from "react";
 
 export default function ArticlePreviewSkeleton() {
   return (
-    <div className="space-y-0">
+    <div>
       {Array.from({ length: 10 }).map((_, index) => (
         <div key={index} className="border-b border-systemBackground-border py-8">
           {/* Date and badges row */}

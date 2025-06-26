@@ -16,7 +16,7 @@ export default function Article({ antipattern }: { antipattern: Antipattern }) {
   const summary = unescapeNewlines(antipattern.summary || "");
 
   return (
-    <div className="h-full overflow-y-auto overflow-x-hidden">
+    <div>
       <div className="sticky top-0 bg-white z-10 pb-4 border-b border-systemBackground-border">
         <div className="flex justify-between items-center">
           <span className="text-label-secondary text-captionSmall">{date}</span>

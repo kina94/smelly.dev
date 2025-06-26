@@ -22,6 +22,10 @@
   body {
     @apply overflow-hidden;
     @apply text-2xl;
+    @apply h-screen;
+    @apply bg-white;
+    @apply flex;
+    @apply flex-col;
   }
   html,
   body,

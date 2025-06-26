@@ -26,7 +26,7 @@ export default function DynamicTitle() {
   const title = getTitleByPathname(pathname || "/");
 
   return (
-    <div>
+    <div className="max-w-4xl mx-auto">
       {pathname && pathname.startsWith("/antipatterns/") && <BackButton url={"/antipatterns"} />}
       <h1 className="text-left mb-12 text-hero">{title}</h1>
     </div>

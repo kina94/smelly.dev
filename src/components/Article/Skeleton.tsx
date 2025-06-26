@@ -1,6 +1,6 @@
 export default function PostCardSkeleton() {
   return (
-    <div className="h-full overflow-y-auto overflow-x-hidden">
+    <div>
       {/* Header Section */}
       <div className="sticky top-0 bg-white z-10 pb-4 border-b border-systemBackground-border">
         <div className="flex justify-between items-center">

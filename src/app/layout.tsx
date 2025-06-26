@@ -24,15 +24,17 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${pretendard.variable} antialiased`}>
       <body className={pretendard.className}>
-        <div className="h-screen bg-white flex flex-col">
-          <Header />
-          <main className="flex-1 pt-24 overflow-hidden">
-            <div className="mx-auto w-full max-w-4xl px-4 py-8 h-full flex flex-col">
+        <Header />
+        <main className="pt-24 overflow-hidden">
+          <div className="w-full px-4 py-8 h-full flex flex-col">
+            <div className="w-full">
               <DynamicTitle />
-              <div className="flex-1 overflow-y-auto overflow-x-hidden pb-2">{children}</div>
             </div>
-          </main>
-        </div>
+            <div className="h-full overflow-y-auto overflow-x-hidden flex flex-col">
+              <div className="max-w-4xl mx-auto w-full">{children}</div>
+            </div>
+          </div>
+        </main>
       </body>
     </html>
   );

@@ -15,20 +15,18 @@ export default async function AntipatternsPage({ searchParams }: { searchParams:
   const { antipatterns, pagination } = await getAntipatterns(page, limit);
 
   return (
-    <>
-      <div className="h-full overflow-y-auto overflow-x-hidden flex flex-col">
-        {antipatterns?.map((antipattern: Antipattern, index: number) => (
-          <ArticlePreview key={antipattern.id} antipattern={antipattern} index={antipatterns.length - index} />
-        ))}
-        <div className="pt-10">
-          <AntiPatternPagination
-            currentPage={pagination?.currentPage || 1}
-            totalPages={pagination?.totalPages || 1}
-            hasNextPage={pagination?.hasNextPage || false}
-            hasPrevPage={pagination?.hasPrevPage || false}
-          />
-        </div>
+    <div>
+      {antipatterns?.map((antipattern: Antipattern, index: number) => (
+        <ArticlePreview key={antipattern.id} antipattern={antipattern} index={antipatterns.length - index} />
+      ))}
+      <div className="pt-10">
+        <AntiPatternPagination
+          currentPage={pagination?.currentPage || 1}
+          totalPages={pagination?.totalPages || 1}
+          hasNextPage={pagination?.hasNextPage || false}
+          hasPrevPage={pagination?.hasPrevPage || false}
+        />
       </div>
-    </>
+    </div>
   );
 }
