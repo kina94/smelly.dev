@@ -77,7 +77,7 @@ export async function getAntipatterns(page: number = 1, limit: number = 10) {
     try {
       // updatedAt 필드로 정렬하여 페이지네이션 적용
       snapshot = await antipatternsRef.orderBy("updatedAt", "desc").offset(offset).limit(limit).get();
-    } catch (sortError) {
+    } catch {
       // 정렬 실패 시 모든 문서 조회 후 클라이언트에서 정렬
       snapshot = await antipatternsRef.offset(offset).limit(limit).get();
     }

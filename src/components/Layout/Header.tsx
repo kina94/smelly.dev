@@ -2,12 +2,11 @@
 
 import React from "react";
 import { Logo } from "@/widgets";
-import { useRouter, usePathname } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { getActiveTab, NAVIGATION_TABS } from "@/utils/navigation";
 import Link from "next/link";
 
 export default function Header() {
-  const router = useRouter();
   const pathname = usePathname();
 
   const activeTab = getActiveTab(pathname || "");

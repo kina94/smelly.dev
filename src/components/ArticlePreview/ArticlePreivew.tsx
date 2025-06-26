@@ -5,7 +5,6 @@ import { getDifficultyVariant, toDate } from "@/utils/etc";
 import dayjs from "dayjs";
 import React from "react";
 import { Badge } from "@/shared/ui";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 export default function ArticlePreview({ antipattern, index }: { antipattern: Antipattern; index: number }) {

@@ -1,5 +1,3 @@
-"use client";
-
 import { Button } from "@/shared/ui";
 
 export default function ErrorMessage({ message }: { message: string }) {

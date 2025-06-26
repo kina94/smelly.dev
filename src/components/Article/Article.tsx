@@ -1,5 +1,3 @@
-"use client";
-
 import { Antipattern } from "@/shared/types";
 import { unescapeNewlines, stripMarkdownCodeBlock, getDifficultyVariant, toDate } from "@/utils/etc";
 import dayjs from "dayjs";
