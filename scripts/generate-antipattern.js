@@ -111,19 +111,55 @@ const createPrompt = async (existingAntipatterns, overusedTags) => {
 
 // AI 응답 파싱
 const parseAIResponse = (responseText) => {
+  if (!responseText) {
+    console.error("응답 텍스트가 비어있습니다.");
+    return null;
+  }
+
+  // 1. 코드 블록으로 감싸진 JSON 추출 시도
+  const jsonBlockRegex = /```(?:json)?\s*([\s\S]*?)\s*```/;
+  const jsonBlockMatch = responseText.match(jsonBlockRegex);
+
+  if (jsonBlockMatch) {
+    try {
+      const jsonContent = jsonBlockMatch[1].trim();
+      console.log("코드 블록에서 JSON 추출됨:", jsonContent);
+      return JSON.parse(jsonContent);
+    } catch (error) {
+      console.error("코드 블록 JSON 파싱 실패:", error);
+    }
+  }
+
+  // 2. 중괄호로 감싸진 JSON 객체 찾기
+  const jsonObjectRegex = /\{[\s\S]*\}/;
+  const jsonObjectMatch = responseText.match(jsonObjectRegex);
+
+  if (jsonObjectMatch) {
+    try {
+      const jsonContent = jsonObjectMatch[0];
+      console.log("중괄호로 감싸진 JSON 추출됨:", jsonContent);
+      return JSON.parse(jsonContent);
+    } catch (error) {
+      console.error("중괄호 JSON 파싱 실패:", error);
+    }
+  }
+
+  // 3. 기존 로직 (전체 텍스트에서 특수문자 처리)
   try {
     const cleanedJSON = responseText.replace(/\n/g, "\\n").replace(/\r/g, "\\r").replace(/\t/g, "\\t");
 
     return JSON.parse(cleanedJSON);
   } catch (error) {
     console.error("첫 번째 파싱 시도 실패:", error);
+  }
 
-    try {
-      return JSON.parse(responseText);
-    } catch (secondError) {
-      console.error("두 번째 파싱 시도도 실패:", secondError);
-      return null;
-    }
+  // 4. 마지막 시도 (원본 텍스트 그대로)
+  try {
+    return JSON.parse(responseText);
+  } catch (secondError) {
+    console.error("모든 파싱 시도 실패:", secondError);
+    console.error("원본 응답:", responseText);
+    return null;
   }
 };
 
