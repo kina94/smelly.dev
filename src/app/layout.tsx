@@ -27,7 +27,7 @@ export default function RootLayout({
       <body className={pretendard.className}>
         <div className="min-h-screen bg-white flex flex-col">
           <Header />
-          <main className="flex-1 pt-20 pb-20">
+          <main className="flex-1 pt-32 pb-20">
             <div className="mx-auto w-full max-w-4xl px-4 py-8">
               <DynamicTitle />
               {children}

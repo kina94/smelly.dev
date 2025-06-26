@@ -43,7 +43,7 @@ export default async function Home() {
   }
 
   return (
-    <div className="h-[calc(100vh-280px)]">
+    <div className="h-[calc(100vh-330px)]">
       <Suspense fallback={<ArticleSkeleton />}>
         <Article antipattern={latestAntipattern} />
       </Suspense>

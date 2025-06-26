@@ -21,7 +21,7 @@ const AntiPatternDetail = async ({ params }: { params: Promise<{ id: string }> }
   const antipattern = await getAntipattern(id);
 
   return (
-    <div className="h-[calc(100vh-320px)]">
+    <div className="h-[calc(100vh-370px)]">
       <Article key={id} antipattern={antipattern} />
     </div>
   );

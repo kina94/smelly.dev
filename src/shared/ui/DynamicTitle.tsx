@@ -7,9 +7,9 @@ import BackButton from "./BackButton";
 function getTitleByPathname(pathname: string): string {
   switch (pathname) {
     case "/":
-      return "Today's Antipatterns";
+      return "Today's Antipattern";
     case "/antipatterns":
-      return "Antipatterns";
+      return "All Antipatterns";
     case "/bookmarks":
       return "Bookmarks";
     case "/user":

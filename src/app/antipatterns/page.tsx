@@ -44,7 +44,7 @@ export default async function AntipatternsPage({ searchParams }: { searchParams:
   const { antipatterns, pagination } = await getAntipatterns(page, limit);
 
   return (
-    <div className="h-[calc(100vh-330px)]">
+    <div className="h-[calc(100vh-380px)]">
       <div className="sticky top-0 bg-white z-10 pb-4">
         <AntiPatternPagination
           currentPage={pagination?.currentPage || 1}
