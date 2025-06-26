@@ -1,5 +1,8 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
 
 // Firebase Timestamp 타입 정의
 interface FirebaseTimestamp {
@@ -111,4 +114,12 @@ export function getVisiblePages(currentPage: number, totalPages: number, maxVisi
   }
 
   return pages;
+}
+
+export function formatDate(date: FirebaseTimestamp | Date | null | undefined): string {
+  if (!date) return "";
+  dayjs.extend(utc);
+  dayjs.extend(timezone);
+
+  return dayjs.utc(toDate(date)).tz("Asia/Seoul").format("YYYY-MM-DD");
 }

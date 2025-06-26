@@ -1,14 +1,13 @@
 "use client";
 
 import { Antipattern } from "@/shared/types";
-import { getDifficultyVariant, toDate } from "@/utils/etc";
-import dayjs from "dayjs";
+import { formatDate, getDifficultyVariant } from "@/utils/etc";
 import React from "react";
 import { Badge, BadgeGroup } from "@/shared/ui";
 import Link from "next/link";
 
 export default function ArticlePreview({ antipattern, index }: { antipattern: Antipattern; index: number }) {
-  const date = dayjs(toDate(antipattern.updatedAt)).format("YYYY-MM-DD");
+  const date = formatDate(antipattern.updatedAt);
 
   return (
     <Link

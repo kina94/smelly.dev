@@ -1,6 +1,6 @@
 import { Antipattern } from "@/shared/types";
-import { unescapeNewlines, stripMarkdownCodeBlock, getDifficultyVariant, toDate } from "@/utils/etc";
-import dayjs from "dayjs";
+import { unescapeNewlines, stripMarkdownCodeBlock, getDifficultyVariant, formatDate } from "@/utils/etc";
+
 import React from "react";
 import { Badge } from "@/shared/ui";
 import { MarkdownRenderer } from "@/widgets";
@@ -8,7 +8,7 @@ import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { prism } from "react-syntax-highlighter/dist/esm/styles/prism";
 
 export default function Article({ antipattern }: { antipattern: Antipattern }) {
-  const date = dayjs(toDate(antipattern.updatedAt)).format("YYYY-MM-DD");
+  const date = formatDate(antipattern.updatedAt);
   const fix = unescapeNewlines(antipattern.howToFix || "");
   const whyWrong = unescapeNewlines(antipattern.whyWrong || "");
   const summary = unescapeNewlines(antipattern.summary || "");
