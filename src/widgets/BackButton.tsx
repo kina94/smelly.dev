@@ -7,7 +7,10 @@ export default function BackButton({ url }: { url: string }) {
   const router = useRouter();
 
   return (
-    <button onClick={() => router.push(url)} className="flex items-center gap-2 text-captionRegular mb-4">
+    <button
+      onClick={() => router.push(url)}
+      className="flex items-center gap-2 text-captionRegular mb-4 text-gray-600 hover:text-gray-500"
+    >
       <svg
         width="16"
         height="16"

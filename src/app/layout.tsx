@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import { DynamicTitle } from "@/widgets";
-import { Footer, Header } from "@/components/Layout";
+import { Header } from "@/components/Layout";
 
 const pretendard = localFont({
   src: "./fonts/PretendardVariable.woff2",
@@ -24,15 +24,14 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${pretendard.variable} antialiased`}>
       <body className={pretendard.className}>
-        <div className="min-h-screen bg-white flex flex-col">
+        <div className="h-screen bg-white flex flex-col">
           <Header />
-          <main className="flex-1 pt-32 pb-20">
-            <div className="mx-auto w-full max-w-4xl px-4 py-8">
+          <main className="flex-1 pt-24 overflow-hidden">
+            <div className="mx-auto w-full max-w-4xl px-4 py-8 h-full flex flex-col">
               <DynamicTitle />
-              {children}
+              <div className="flex-1 overflow-y-auto overflow-x-hidden pb-2">{children}</div>
             </div>
           </main>
-          <Footer />
         </div>
       </body>
     </html>

@@ -8,10 +8,10 @@ export interface NavigationTab {
   href: string;
 }
 
-export const footerTabs: NavigationTab[] = [
+export const NAVIGATION_TABS: NavigationTab[] = [
   {
     id: "home",
-    label: "홈화면",
+    label: "홈",
     icon: HomeIcon,
     href: "/",
   },

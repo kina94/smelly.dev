@@ -16,7 +16,10 @@ export default function ArticlePreview({ antipattern, index }: { antipattern: An
   };
 
   return (
-    <div className="border-b border-systemBackground-border py-8 cursor-pointer" onClick={handleOnClick}>
+    <div
+      className="border-b border-systemBackground-border py-10 cursor-pointer transition-all duration-300 ease-in-out rounded-lg px-4 hover:translate-x-2"
+      onClick={handleOnClick}
+    >
       <div className="flex justify-between items-center">
         <span className="text-label-secondary text-captionSmall">{date}</span>
         <div className="flex gap-2"></div>
