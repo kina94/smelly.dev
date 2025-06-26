@@ -1,7 +1,7 @@
 import * as React from "react";
 import { ChevronLeft, ChevronRight, MoreHorizontal } from "lucide-react";
 
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils/etc";
 import { ButtonProps, buttonVariants } from "@/shared/ui/Button";
 
 const Pagination = ({ className, ...props }: React.ComponentProps<"nav">) => (

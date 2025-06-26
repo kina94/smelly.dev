@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import { getVisiblePages } from "@/lib/utils";
+import { getVisiblePages } from "@/utils/etc";
 import {
   Pagination,
   PaginationContent,

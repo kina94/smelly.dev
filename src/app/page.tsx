@@ -1,6 +1,6 @@
 import { Article, ArticleSkeleton } from "@/components/Article";
 import { ErrorMessage } from "@/widgets";
-import { getLatestAntipattern } from "@/shared/api";
+import { getLatestAntipattern } from "@/lib/antipattern";
 import { Suspense } from "react";
 
 export default async function Home() {

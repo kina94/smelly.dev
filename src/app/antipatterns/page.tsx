@@ -1,7 +1,7 @@
 import { Antipattern } from "@/shared/types";
 import { ArticlePreview } from "@/components/ArticlePreview";
 import { AntiPatternPagination } from "@/components/Antipatterns";
-import { getAntipatterns } from "@/shared/api";
+import { getAntipatterns } from "@/lib/antipattern";
 
 interface SearchParams {
   page?: string;

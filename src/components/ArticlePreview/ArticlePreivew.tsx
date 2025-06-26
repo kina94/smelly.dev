@@ -1,7 +1,7 @@
 "use client";
 
 import { Antipattern } from "@/shared/types";
-import { getDifficultyVariant, toDate } from "@/lib/utils";
+import { getDifficultyVariant, toDate } from "@/utils/etc";
 import dayjs from "dayjs";
 import React from "react";
 import { Badge } from "@/shared/ui";

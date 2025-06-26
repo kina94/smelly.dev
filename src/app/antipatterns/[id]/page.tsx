@@ -1,5 +1,5 @@
 import Article from "@/components/Article/Article";
-import { getAntipattern } from "@/shared/api";
+import { getAntipattern } from "@/lib/antipattern";
 import React from "react";
 
 const AntiPatternDetail = async ({ params }: { params: Promise<{ id: string }> }) => {
