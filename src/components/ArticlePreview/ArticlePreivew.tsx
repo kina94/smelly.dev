@@ -12,7 +12,7 @@ export default function ArticlePreview({ antipattern, index }: { antipattern: An
 
   return (
     <Link
-      className="border-b border-systemBackground-border py-10 cursor-pointer transition-all duration-300 ease-in-out rounded-lg px-4 hover:translate-x-2"
+      className="block border-b border-systemBackground-border py-10 cursor-pointer transition-all duration-300 ease-in-out rounded-lg px-4 hover:translate-x-2"
       href={`/antipatterns/${antipattern.id || ""}`}
       prefetch={true}
     >

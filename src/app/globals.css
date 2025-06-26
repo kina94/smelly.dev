@@ -20,7 +20,6 @@
     @apply box-border;
   }
   body {
-    @apply overflow-hidden;
     @apply text-2xl;
     @apply h-screen;
     @apply bg-white;
