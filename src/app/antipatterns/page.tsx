@@ -1,32 +1,63 @@
-import { adminDb } from "@/shared/config/firebase-admin";
 import { Antipattern } from "@/shared/types";
 import ArticlePreview from "@/widgets/ArticlePreview";
+import AntiPatternPagination from "./AntiPatternPagination";
 
-async function getAntipatterns() {
-  const antipatterns = await adminDb.collection("antipatterns").orderBy("updatedAt", "desc").get();
-  return antipatterns.docs.map((doc) => {
-    const data = doc.data();
-    // Firebase 데이터를 직렬화 가능한 형태로 변환
-    return JSON.parse(
-      JSON.stringify({
-        ...data,
-        id: doc.id,
-      }),
-    ) as Antipattern;
-  });
+interface SearchParams {
+  page?: string;
+  limit?: string;
 }
 
-export default async function AntipatternsPage() {
-  const antipatterns = await getAntipatterns();
+async function getAntipatterns(page: number = 1, limit: number = 10) {
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"}/api/antipattern/list?page=${page}&limit=${limit}`,
+      { cache: "no-store" },
+    );
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch antipatterns");
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching antipatterns:", error);
+    return {
+      success: false,
+      antipatterns: [],
+      pagination: {
+        currentPage: 1,
+        totalPages: 1,
+        totalCount: 0,
+        limit: 10,
+        hasNextPage: false,
+        hasPrevPage: false,
+      },
+    };
+  }
+}
+
+export default async function AntipatternsPage({ searchParams }: { searchParams: SearchParams }) {
+  const page = parseInt(searchParams.page || "1");
+  const limit = parseInt(searchParams.limit || "10");
+
+  const { antipatterns, pagination } = await getAntipatterns(page, limit);
 
   return (
     <div className="h-[calc(100vh-330px)]">
+      <div className="sticky top-0 bg-white z-10 pb-4">
+        <AntiPatternPagination
+          currentPage={pagination?.currentPage || 1}
+          totalPages={pagination?.totalPages || 1}
+          hasNextPage={pagination?.hasNextPage || false}
+          hasPrevPage={pagination?.hasPrevPage || false}
+        />
+      </div>
       <div className="h-full overflow-y-auto overflow-x-hidden flex flex-col gap-12">
-        {antipatterns.map((antipattern, index) => (
+        {antipatterns?.map((antipattern: Antipattern, index: number) => (
           <ArticlePreview key={antipattern.id} antipattern={antipattern} index={index} />
         ))}
       </div>
-      <div className="sticky top-0 bg-white z-10 pb-4">pageNation</div>
     </div>
   );
 }

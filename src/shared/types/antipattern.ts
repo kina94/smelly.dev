@@ -13,10 +13,20 @@ export interface Antipattern {
   updatedAt?: Date;
 }
 
+export interface PaginationInfo {
+  currentPage: number;
+  totalPages: number;
+  totalCount: number;
+  limit: number;
+  hasNextPage: boolean;
+  hasPrevPage: boolean;
+}
+
 export interface AntipatternResponse {
   success: boolean;
   antipattern?: Antipattern;
   antipatterns?: Antipattern[];
+  pagination?: PaginationInfo;
   message?: string;
   error?: string;
 }
