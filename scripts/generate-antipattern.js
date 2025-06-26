@@ -87,6 +87,7 @@ const createPrompt = (existingAntipatterns, overusedTags) => {
 1. 아래 기존에 생성된 안티패턴들과 절대 중복되지 않는 새로운 안티패턴을 만들어야 해.
 2. 제목, 내용, 개념이 비슷하거나 유사한 것은 절대 생성하지 마.
 3. 최근에 자주 사용된 태그들(${overusedTags.join(", ")})은 피해서 다른 태그 조합을 사용해줘.
+4. 링크는 실제로 열리는 링크만 포함되어야 하고, 내용과 관련이 있는 문서여야만 해.
 4. 바로 파싱할거니까 코드블록 없이 응답해줘.
 
 기존 안티패턴 목록:
@@ -107,6 +108,7 @@ ${existingInfo}
   "type": "프론트엔드|백엔드|데이터베이스|기타",
   "difficulty": "초급|중급|고급",
   "updatedAt": "오늘의 날짜와 시간"
+  "viewCount": 0,
 }
 
 내부 콘텐츠는 마크다운 문법으로 만들어.
@@ -164,6 +166,7 @@ const validateAntipattern = (antipattern) => {
     type: antipattern?.type || "기타",
     difficulty: antipattern?.difficulty || "중급",
     updatedAt: new Date(),
+    viewCount: 0,
   };
 };
 

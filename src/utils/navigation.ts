@@ -1,4 +1,4 @@
-import { List, Bookmark, User, HomeIcon, LucideProps } from "lucide-react";
+import { List, HomeIcon, LucideProps } from "lucide-react";
 import { ForwardRefExoticComponent, RefAttributes } from "react";
 
 export interface NavigationTab {
@@ -20,18 +20,6 @@ export const footerTabs: NavigationTab[] = [
     label: "안티패턴",
     icon: List,
     href: "/antipatterns",
-  },
-  {
-    id: "bookmarks",
-    label: "북마크",
-    icon: Bookmark,
-    href: "/bookmarks",
-  },
-  {
-    id: "user",
-    label: "유저",
-    icon: User,
-    href: "/user",
   },
 ];
 
