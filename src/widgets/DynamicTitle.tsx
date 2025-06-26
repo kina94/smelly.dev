@@ -1,7 +1,6 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import Title from "./Title";
 import BackButton from "./BackButton";
 
 function getTitleByPathname(pathname: string): string {
@@ -29,7 +28,7 @@ export default function DynamicTitle() {
   return (
     <div>
       {pathname && pathname.startsWith("/antipatterns/") && <BackButton url={"/antipatterns"} />}
-      <Title title={title} />
+      <h1 className="text-left mb-12 text-hero">{title}</h1>
     </div>
   );
 }

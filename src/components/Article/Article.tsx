@@ -1,26 +1,13 @@
 "use client";
 
 import { Antipattern } from "@/shared/types";
-import { unescapeNewlines, toDate, stripMarkdownCodeBlock } from "@/lib/utils";
+import { unescapeNewlines, stripMarkdownCodeBlock, getDifficultyVariant, toDate } from "@/lib/utils";
 import dayjs from "dayjs";
 import React from "react";
-import { MarkdownRenderer, Badge } from "@/shared/ui";
+import { Badge } from "@/shared/ui";
+import { MarkdownRenderer } from "@/widgets";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { prism } from "react-syntax-highlighter/dist/esm/styles/prism";
-
-// 난이도별 뱃지 색상 매핑 함수
-const getDifficultyVariant = (difficulty: string) => {
-  switch (difficulty) {
-    case "초급":
-      return "yellow";
-    case "중급":
-      return "green";
-    case "고급":
-      return "pink";
-    default:
-      return "yellow";
-  }
-};
 
 export default function Article({ antipattern }: { antipattern: Antipattern }) {
   const date = dayjs(toDate(antipattern.updatedAt)).format("YYYY-MM-DD");

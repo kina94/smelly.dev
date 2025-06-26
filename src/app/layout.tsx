@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
-import Footer from "@/widgets/Footer";
 import localFont from "next/font/local";
 import "./globals.css";
-import Header from "@/widgets/Header";
-import DynamicTitle from "@/shared/ui/DynamicTitle";
+import { DynamicTitle } from "@/widgets";
+import { Footer, Header } from "@/components/Layout";
 
 const pretendard = localFont({
   src: "./fonts/PretendardVariable.woff2",

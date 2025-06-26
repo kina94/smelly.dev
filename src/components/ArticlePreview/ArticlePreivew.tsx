@@ -1,31 +1,18 @@
 "use client";
 
 import { Antipattern } from "@/shared/types";
-import { toDate } from "@/lib/utils";
+import { getDifficultyVariant, toDate } from "@/lib/utils";
 import dayjs from "dayjs";
 import React from "react";
 import { Badge } from "@/shared/ui";
 import { useRouter } from "next/navigation";
 
-// 난이도별 뱃지 색상 매핑 함수
-const getDifficultyVariant = (difficulty: string) => {
-  switch (difficulty) {
-    case "초급":
-      return "yellow";
-    case "중급":
-      return "green";
-    case "고급":
-      return "pink";
-    default:
-      return "yellow";
-  }
-};
 export default function ArticlePreview({ antipattern, index }: { antipattern: Antipattern; index: number }) {
   const router = useRouter();
   const date = dayjs(toDate(antipattern.updatedAt)).format("YYYY-MM-DD");
 
   const handleOnClick = () => {
-    router.push(`/antipatterns/${antipattern.id}`);
+    router.push(`/antipatterns/${antipattern.id || ""}`);
   };
 
   return (

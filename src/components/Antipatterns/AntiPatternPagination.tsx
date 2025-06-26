@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
+import { getVisiblePages } from "@/lib/utils";
 import {
   Pagination,
   PaginationContent,
@@ -37,34 +38,7 @@ export default function AntipatternPagination({
     router.push(createPageURL(pageNumber));
   };
 
-  // 표시할 페이지 번호들 계산
-  const getVisiblePages = () => {
-    const pages = [];
-    const maxVisible = 5;
-
-    if (totalPages <= maxVisible) {
-      // 전체 페이지가 5개 이하면 모두 표시
-      for (let i = 1; i <= totalPages; i++) {
-        pages.push(i);
-      }
-    } else {
-      // 현재 페이지를 중심으로 5개 표시
-      let start = Math.max(1, currentPage - 2);
-      const end = Math.min(totalPages, start + maxVisible - 1);
-
-      if (end - start + 1 < maxVisible) {
-        start = Math.max(1, end - maxVisible + 1);
-      }
-
-      for (let i = start; i <= end; i++) {
-        pages.push(i);
-      }
-    }
-
-    return pages;
-  };
-
-  const visiblePages = getVisiblePages();
+  const visiblePages = getVisiblePages(currentPage, totalPages);
 
   return (
     <Pagination>

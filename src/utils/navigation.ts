@@ -1,9 +1,10 @@
-import { House, List, Bookmark, User, HomeIcon } from "lucide-react";
+import { List, Bookmark, User, HomeIcon, LucideProps } from "lucide-react";
+import { ForwardRefExoticComponent, RefAttributes } from "react";
 
 export interface NavigationTab {
   id: string;
   label: string;
-  icon: React.ComponentType<any>;
+  icon: ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>;
   href: string;
 }
 

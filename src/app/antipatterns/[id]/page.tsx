@@ -1,26 +1,6 @@
 import Article from "@/components/Article/Article";
+import { getAntipattern } from "@/shared/api";
 import React from "react";
-
-async function getAntipattern(id: string) {
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"}/api/antipatterns/${id}`,
-    {
-      cache: "no-store",
-    },
-  );
-
-  if (!response.ok) {
-    throw new Error("안티패턴을 가져오는데 실패했습니다.");
-  }
-
-  const data = await response.json();
-
-  if (!data.success) {
-    throw new Error(data.error || "안티패턴을 가져오는데 실패했습니다.");
-  }
-
-  return data.antipattern;
-}
 
 const AntiPatternDetail = async ({ params }: { params: Promise<{ id: string }> }) => {
   const { id } = await params;

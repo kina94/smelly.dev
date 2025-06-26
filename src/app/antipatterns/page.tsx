@@ -1,42 +1,11 @@
 import { Antipattern } from "@/shared/types";
 import { ArticlePreview } from "@/components/ArticlePreview";
 import { AntiPatternPagination } from "@/components/Antipatterns";
+import { getAntipatterns } from "@/shared/api";
 
 interface SearchParams {
   page?: string;
   limit?: string;
-}
-
-async function getAntipatterns(page: number = 1, limit: number = 10) {
-  console.log("call");
-  try {
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
-    const response = await fetch(`${baseUrl}/api/antipatterns?page=${page}&limit=${limit}`, {
-      method: "GET",
-      cache: "no-store",
-    });
-
-    if (!response.ok) {
-      throw new Error("Failed to fetch antipatterns");
-    }
-
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error("Error fetching antipatterns:", error);
-    return {
-      success: false,
-      antipatterns: [],
-      pagination: {
-        currentPage: 1,
-        totalPages: 1,
-        totalCount: 0,
-        limit: 10,
-        hasNextPage: false,
-        hasPrevPage: false,
-      },
-    };
-  }
 }
 
 export default async function AntipatternsPage({ searchParams }: { searchParams: SearchParams }) {

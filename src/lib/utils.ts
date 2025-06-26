@@ -62,3 +62,53 @@ export function stripMarkdownCodeBlock(code: string | null | undefined): string 
   }
   return code;
 }
+
+/**
+ * 난이도별 뱃지 색상 매핑 함수
+ * @param difficulty - 난이도 문자열
+ * @returns 뱃지 variant 문자열
+ */
+export function getDifficultyVariant(difficulty: string): "yellow" | "green" | "pink" {
+  switch (difficulty) {
+    case "초급":
+      return "yellow";
+    case "중급":
+      return "green";
+    case "고급":
+      return "pink";
+    default:
+      return "yellow";
+  }
+}
+
+/**
+ * 페이지네이션에서 표시할 페이지 번호들을 계산합니다.
+ * @param currentPage - 현재 페이지
+ * @param totalPages - 전체 페이지 수
+ * @param maxVisible - 최대 표시할 페이지 수
+ * @returns 표시할 페이지 번호 배열
+ */
+export function getVisiblePages(currentPage: number, totalPages: number, maxVisible: number = 5): number[] {
+  const pages = [];
+
+  if (totalPages <= maxVisible) {
+    // 전체 페이지가 maxVisible개 이하면 모두 표시
+    for (let i = 1; i <= totalPages; i++) {
+      pages.push(i);
+    }
+  } else {
+    // 현재 페이지를 중심으로 maxVisible개 표시
+    let start = Math.max(1, currentPage - Math.floor(maxVisible / 2));
+    const end = Math.min(totalPages, start + maxVisible - 1);
+
+    if (end - start + 1 < maxVisible) {
+      start = Math.max(1, end - maxVisible + 1);
+    }
+
+    for (let i = start; i <= end; i++) {
+      pages.push(i);
+    }
+  }
+
+  return pages;
+}
