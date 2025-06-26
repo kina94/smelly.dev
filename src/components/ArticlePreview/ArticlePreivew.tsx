@@ -26,7 +26,7 @@ export default function ArticlePreview({ antipattern, index }: { antipattern: An
       </div>
       <div className="flex flex-col gap-2">
         <h3 className="text-label-primary text-large break-words mt-2">
-          #{index + 1}. {antipattern.title || "제목 없음"}
+          #{index}. {antipattern.title || "제목 없음"}
         </h3>
         <span className="text-label-secondary text-bodyRegular line-clamp-2">{antipattern.summary || "요약 없음"}</span>
       </div>

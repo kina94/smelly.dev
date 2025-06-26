@@ -18,7 +18,7 @@ export default async function AntipatternsPage({ searchParams }: { searchParams:
     <>
       <div className="h-full overflow-y-auto overflow-x-hidden flex flex-col">
         {antipatterns?.map((antipattern: Antipattern, index: number) => (
-          <ArticlePreview key={antipattern.id} antipattern={antipattern} index={index} />
+          <ArticlePreview key={antipattern.id} antipattern={antipattern} index={antipatterns.length - index} />
         ))}
         <div className="pt-10">
           <AntiPatternPagination
