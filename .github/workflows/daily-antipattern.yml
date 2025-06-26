@@ -58,11 +58,3 @@ jobs:
 
       - name: Generate and upload antipattern
         run: pnpm run generate-antipattern
-
-      - name: Commit and push changes (if any)
-        run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git add -A
-          git diff --quiet && git diff --staged --quiet || git commit -m "🤖 Auto-generated daily antipattern [skip ci]"
-          git push

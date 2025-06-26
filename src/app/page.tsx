@@ -4,7 +4,6 @@ import { adminDb } from "@/shared/config/firebase-admin";
 import { Antipattern } from "@/shared/types";
 import { Suspense } from "react";
 import ErrorMessage from "@/shared/ui/ErrorMessage";
-import { Title } from "@/shared/ui";
 
 export async function getLatestAntipattern(): Promise<Antipattern | null> {
   try {
@@ -36,6 +35,7 @@ export async function getLatestAntipattern(): Promise<Antipattern | null> {
     throw new Error("데이터를 불러오는데 실패했습니다. 다시 시도해주세요.");
   }
 }
+
 async function AntipatternContent() {
   try {
     const latestAntipattern = await getLatestAntipattern();
@@ -54,14 +54,10 @@ async function AntipatternContent() {
 
 export default function Home() {
   return (
-    <div>
-      <Title title={`Today's Antipattern`} />
-      {/* 안티패턴 목록 */}
-      <div className="h-[calc(100vh-280px)]">
-        <Suspense fallback={<ArticleSkeleton />}>
-          <AntipatternContent />
-        </Suspense>
-      </div>
+    <div className="h-[calc(100vh-280px)]">
+      <Suspense fallback={<ArticleSkeleton />}>
+        <AntipatternContent />
+      </Suspense>
     </div>
   );
 }

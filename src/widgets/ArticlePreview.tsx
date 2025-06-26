@@ -7,7 +7,20 @@ import React from "react";
 import { Badge } from "@/shared/ui";
 import { useRouter } from "next/navigation";
 
-export default function ArticlePreview({ antipattern }: { antipattern: Antipattern }) {
+// 난이도별 뱃지 색상 매핑 함수
+const getDifficultyVariant = (difficulty: string) => {
+  switch (difficulty) {
+    case "초급":
+      return "yellow";
+    case "중급":
+      return "green";
+    case "고급":
+      return "pink";
+    default:
+      return "yellow";
+  }
+};
+export default function ArticlePreview({ antipattern, index }: { antipattern: Antipattern; index: number }) {
   const router = useRouter();
   const date = dayjs(toDate(antipattern.updatedAt)).format("YYYY-MM-DD");
 
@@ -22,8 +35,10 @@ export default function ArticlePreview({ antipattern }: { antipattern: Antipatte
         <div className="flex gap-2"></div>
       </div>
       <div className="flex flex-col gap-2">
-        <h3 className="text-label-primary text-large break-words mt-2">{antipattern.title}</h3>
-        <span className="text-label-secondary text-bodyRegular">{antipattern.summary}</span>
+        <h3 className="text-label-primary text-large break-words mt-2">
+          #{index + 1}. {antipattern.title}
+        </h3>
+        <span className="text-label-secondary text-bodyRegular line-clamp-2">{antipattern.summary}</span>
       </div>
       {/* Tags */}
       {antipattern.tags && antipattern.tags.length > 0 && (
@@ -39,7 +54,7 @@ export default function ArticlePreview({ antipattern }: { antipattern: Antipatte
             <Badge variant="default" className="text-xs">
               {antipattern.type}
             </Badge>
-            <Badge variant="secondary" className="text-xs">
+            <Badge variant={getDifficultyVariant(antipattern.difficulty)} className="text-xs">
               {antipattern.difficulty}
             </Badge>
           </div>

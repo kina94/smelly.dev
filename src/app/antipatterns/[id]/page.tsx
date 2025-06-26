@@ -1,5 +1,4 @@
 import { adminDb } from "@/shared/config/firebase-admin";
-import { Title } from "@/shared/ui";
 import Article from "@/widgets/Article";
 import React from "react";
 
@@ -18,13 +17,10 @@ async function getAntipattern(id: string) {
 const AntiPatternDetail = async ({ params }: { params: Promise<{ id: string }> }) => {
   const { id } = await params;
 
-  console.log(id);
-
   const antipattern = await getAntipattern(id);
 
   return (
-    <div className="max-w-4xl mx-auto px-4">
-      <Title title={"Details"} />
+    <div>
       <div className="flex flex-col gap-16">
         <Article key={id} antipattern={antipattern} />
       </div>

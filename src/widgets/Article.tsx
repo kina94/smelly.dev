@@ -8,6 +8,20 @@ import { MarkdownRenderer, Badge } from "@/shared/ui";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { prism } from "react-syntax-highlighter/dist/esm/styles/prism";
 
+// 난이도별 뱃지 색상 매핑 함수
+const getDifficultyVariant = (difficulty: string) => {
+  switch (difficulty) {
+    case "초급":
+      return "yellow";
+    case "중급":
+      return "green";
+    case "고급":
+      return "pink";
+    default:
+      return "yellow";
+  }
+};
+
 export default function Article({ antipattern }: { antipattern: Antipattern }) {
   const date = dayjs(toDate(antipattern.updatedAt)).format("YYYY-MM-DD");
   const fix = unescapeNewlines(antipattern.howToFix);
@@ -23,7 +37,7 @@ export default function Article({ antipattern }: { antipattern: Antipattern }) {
             <Badge variant="default" className="text-xs">
               {antipattern.type}
             </Badge>
-            <Badge variant="secondary" className="text-xs">
+            <Badge variant={getDifficultyVariant(antipattern.difficulty)} className="text-xs">
               {antipattern.difficulty}
             </Badge>
           </div>
