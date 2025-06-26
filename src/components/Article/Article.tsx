@@ -44,6 +44,17 @@ export default function Article({ antipattern }: { antipattern: Antipattern }) {
       </div>
 
       <div className="pt-4 md:pt-6 space-y-6 md:space-y-8">
+        {summary && (
+          <div className="flex flex-col gap-2 md:gap-3 px-6 py-4 bg-[#f0f8ff] border border-systemBlue rounded-lg">
+            <div className="flex items-center gap-2">
+              <h4 className="text-systemBlue font-semibold text-sm md:text-base">Summary</h4>
+            </div>
+            <div className="text-systemBlue text-sm md:text-bodyRegular leading-relaxed">
+              <MarkdownRenderer content={summary} />
+            </div>
+          </div>
+        )}
+
         <div className="flex flex-col gap-1 md:gap-2">
           <h4 className="text-label-primary text-primary pb-1 text-sm md:text-base">Why Wrong?</h4>
           <div className="text-label-primary text-sm md:text-bodyRegular">
@@ -55,13 +66,6 @@ export default function Article({ antipattern }: { antipattern: Antipattern }) {
           <h4 className="text-label-primary text-primary pb-1 text-sm md:text-base">How to Fix?</h4>
           <div className="text-label-primary text-sm md:text-bodyRegular">
             <MarkdownRenderer content={fix} />
-          </div>
-        </div>
-
-        <div className="flex flex-col gap-1 md:gap-2">
-          <h4 className="text-label-primary text-primary pb-1 text-sm md:text-base">Summary</h4>
-          <div className="text-label-primary text-sm md:text-bodyRegular">
-            <MarkdownRenderer content={summary} />
           </div>
         </div>
 

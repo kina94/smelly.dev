@@ -4,7 +4,7 @@ export default function ArticlePreviewSkeleton() {
   return (
     <div>
       {Array.from({ length: 10 }).map((_, index) => (
-        <div key={index} className="border-b border-systemBackground-border">
+        <div key={index} className="border-b border-systemBackground-border first:pt-0 py-6 md:py-10">
           {/* Date and badges row */}
           <div className="flex justify-between items-center">
             {/* Date skeleton */}
