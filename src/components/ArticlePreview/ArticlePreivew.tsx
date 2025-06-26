@@ -36,9 +36,9 @@ export default function ArticlePreview({ antipattern, index }: { antipattern: An
       </div>
       <div className="flex flex-col gap-2">
         <h3 className="text-label-primary text-large break-words mt-2">
-          #{index + 1}. {antipattern.title}
+          #{index + 1}. {antipattern.title || "제목 없음"}
         </h3>
-        <span className="text-label-secondary text-bodyRegular line-clamp-2">{antipattern.summary}</span>
+        <span className="text-label-secondary text-bodyRegular line-clamp-2">{antipattern.summary || "요약 없음"}</span>
       </div>
       {/* Tags */}
       {antipattern.tags && antipattern.tags.length > 0 && (
@@ -52,10 +52,10 @@ export default function ArticlePreview({ antipattern, index }: { antipattern: An
           </div>
           <div className="flex gap-2">
             <Badge variant="default" className="text-xs">
-              {antipattern.type}
+              {antipattern.type || "기타"}
             </Badge>
-            <Badge variant={getDifficultyVariant(antipattern.difficulty)} className="text-xs">
-              {antipattern.difficulty}
+            <Badge variant={getDifficultyVariant(antipattern.difficulty || "중급")} className="text-xs">
+              {antipattern.difficulty || "중급"}
             </Badge>
           </div>
         </div>

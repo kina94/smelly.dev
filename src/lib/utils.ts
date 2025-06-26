@@ -1,6 +1,12 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
+// Firebase Timestamp 타입 정의
+interface FirebaseTimestamp {
+  _seconds: number;
+  _nanoseconds: number;
+}
+
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
@@ -10,7 +16,8 @@ export function cn(...inputs: ClassValue[]) {
  * @param text - 변환할 문자열
  * @returns 변환된 문자열
  */
-export function unescapeNewlines(text: string): string {
+export function unescapeNewlines(text: string | null | undefined): string {
+  if (!text) return "";
   return text.replace(/\\n/g, "\n");
 }
 
@@ -19,8 +26,18 @@ export function unescapeNewlines(text: string): string {
  * @param timestamp - Firebase Timestamp 객체 또는 Date 객체
  * @returns Date 객체
  */
-export function toDate(timestamp: any): Date {
-  return timestamp?._seconds ? new Date(timestamp._seconds * 1000) : timestamp;
+export function toDate(timestamp: FirebaseTimestamp | Date | null | undefined): Date {
+  if (!timestamp) {
+    return new Date();
+  }
+
+  // Firebase Timestamp인지 확인
+  if (typeof timestamp === "object" && "_seconds" in timestamp) {
+    return new Date(timestamp._seconds * 1000);
+  }
+
+  // Date 객체인 경우 그대로 반환
+  return timestamp as Date;
 }
 
 /**
@@ -28,9 +45,11 @@ export function toDate(timestamp: any): Date {
  * @param code - 마크다운 코드 블록 문자열
  * @returns 정리된 코드 문자열
  */
-export function stripMarkdownCodeBlock(code: string): string {
+export function stripMarkdownCodeBlock(code: string | null | undefined): string {
+  if (!code) return "";
+
   // 앞뒤 공백 제거
-  let trimmed = code.trim();
+  const trimmed = code.trim();
 
   // ```로 시작하고, ```로 끝나면
   if (trimmed.startsWith("```") && trimmed.endsWith("```")) {

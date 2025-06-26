@@ -24,9 +24,9 @@ const getDifficultyVariant = (difficulty: string) => {
 
 export default function Article({ antipattern }: { antipattern: Antipattern }) {
   const date = dayjs(toDate(antipattern.updatedAt)).format("YYYY-MM-DD");
-  const fix = unescapeNewlines(antipattern.howToFix);
-  const whyWrong = unescapeNewlines(antipattern.whyWrong);
-  const summary = unescapeNewlines(antipattern.summary);
+  const fix = unescapeNewlines(antipattern.howToFix || "");
+  const whyWrong = unescapeNewlines(antipattern.whyWrong || "");
+  const summary = unescapeNewlines(antipattern.summary || "");
 
   return (
     <div className="h-full overflow-y-auto overflow-x-hidden">
@@ -35,14 +35,14 @@ export default function Article({ antipattern }: { antipattern: Antipattern }) {
           <span className="text-label-secondary text-captionSmall">{date}</span>
           <div className="flex gap-2">
             <Badge variant="default" className="text-xs">
-              {antipattern.type}
+              {antipattern.type || "기타"}
             </Badge>
-            <Badge variant={getDifficultyVariant(antipattern.difficulty)} className="text-xs">
-              {antipattern.difficulty}
+            <Badge variant={getDifficultyVariant(antipattern.difficulty || "중급")} className="text-xs">
+              {antipattern.difficulty || "중급"}
             </Badge>
           </div>
         </div>
-        <h3 className="text-label-primary text-large break-words mt-2">{antipattern.title}</h3>
+        <h3 className="text-label-primary text-large break-words mt-2">{antipattern.title || "제목 없음"}</h3>
 
         {/* Tags */}
         {antipattern.tags && antipattern.tags.length > 0 && (
@@ -89,7 +89,7 @@ export default function Article({ antipattern }: { antipattern: Antipattern }) {
               padding: 16,
             }}
           >
-            {stripMarkdownCodeBlock(antipattern.beforeCode)}
+            {stripMarkdownCodeBlock(antipattern.beforeCode || "")}
           </SyntaxHighlighter>
         </div>
 
@@ -101,7 +101,7 @@ export default function Article({ antipattern }: { antipattern: Antipattern }) {
             customStyle={{ borderRadius: 14, fontSize: 14, padding: 16 }}
             wrapLongLines={true}
           >
-            {stripMarkdownCodeBlock(antipattern.afterCode)}
+            {stripMarkdownCodeBlock(antipattern.afterCode || "")}
           </SyntaxHighlighter>
         </div>
       </div>
