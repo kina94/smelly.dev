@@ -2,7 +2,10 @@
 
 > **매일 하나씩, 프론트엔드 안티패턴을 AI와 함께 학습하는 웹앱**
 
-프론트엔드 개발자들을 위한 데일리 학습 플랫폼입니다. 매일 새로운 안티패턴을 소개하며, 문제 원인부터 해결법, 전/후 코드 비교까지 구조화된 아티클을 제공합니다.
+> https://smelly-dev.vercel.app/
+
+AI를 이용해서 간단하게 뭘 만들어볼까 고민하다가 탄생한 사이드 프로젝트.
+프론트엔드 개발자들을 위한 데일리 웹앱으로 매일 새로운 안티패턴을 소개하며, 문제 원인부터 해결법, 전/후 코드 비교까지 구조화된 아티클을 제공합니다.
 
 ## 🎯 소개
 
@@ -32,11 +35,10 @@
 
 ### Frontend
 
-- **Next.js 14** (App Router) - React 기반 풀스택 프레임워크
-- **TypeScript** - 타입 안전성과 개발 생산성 향상
-- **TailwindCSS** - 유틸리티 퍼스트 CSS 프레임워크
-- **React Query** - 서버 상태 관리 및 캐싱
-- **Radix UI** - 접근성 중심의 UI 컴포넌트
+- **Next.js 14** (App Router) 
+- **TypeScript** 
+- **TailwindCSS**
+- **Shadcn/ui** - 접근성 중심의 UI 컴포넌트
 
 ### Backend & Database
 
@@ -80,13 +82,10 @@ src/
 ### 데이터 플로우
 
 1. **콘텐츠 생성**: GitHub Actions → Google Gemini API → Firebase Firestore
-2. **콘텐츠 조회**: Next.js API Routes → Firebase Admin SDK → 클라이언트
+2. **콘텐츠 조회**: Firebase Admin SDK → 서버사이드 렌더링 → 클라이언트 전달
 3. **실시간 업데이트**: 자동 생성 → 즉시 웹앱 반영
 
-## 🔄 기술적으로 주목할만한 플로우
-
-### 1. AI 기반 자동 콘텐츠 생성 플로우
-
+### AI 기반 자동 콘텐츠 생성 플로우
 ```mermaid
 graph TD
     A[GitHub Actions 스케줄러] --> B[기존 콘텐츠 조회]
