@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { DynamicTitle } from "@/widgets";
 import { Header } from "@/components/Layout";
+import GoogleAnalytics from "@/widgets/GoogleAnalytics";
 
 const pretendard = localFont({
   src: "./fonts/PretendardVariable.woff2",
@@ -24,6 +25,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${pretendard.variable} antialiased`}>
       <body className={pretendard.className}>
+        <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS || ""} />
         <Header />
         <main className="pt-24 overflow-hidden">
           <div className="w-full px-4 py-8 h-full flex flex-col">
