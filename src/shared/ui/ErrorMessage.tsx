@@ -2,7 +2,7 @@
 
 import { Button } from "@/shared/ui";
 
-export default function Error({ error }: { error: Error & { digest?: string }; reset: () => void }) {
+export default function ErrorMessage({ message }: { message: string }) {
   return (
     <div className="min-h-screen flex items-center justify-center px-4">
       <div className="text-center max-w-md">
@@ -23,7 +23,7 @@ export default function Error({ error }: { error: Error & { digest?: string }; r
           <h3 className="text-lg font-semibold text-black mb-2">오류가 발생했습니다</h3>
 
           {/* 에러 메시지 */}
-          <p className="text-red-600 mb-4 text-sm">{error.message}</p>
+          <p className="text-red-600 mb-4 text-sm">{message}</p>
         </div>
 
         {/* 새로고침 버튼 */}

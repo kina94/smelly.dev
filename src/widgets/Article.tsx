@@ -8,9 +8,8 @@ import { MarkdownRenderer, Badge } from "@/shared/ui";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { prism } from "react-syntax-highlighter/dist/esm/styles/prism";
 
-export default function PostCard({ antipattern }: { antipattern: Antipattern }) {
+export default function Article({ antipattern }: { antipattern: Antipattern }) {
   const date = dayjs(toDate(antipattern.updatedAt)).format("YYYY-MM-DD");
-
   const fix = unescapeNewlines(antipattern.howToFix);
   const whyWrong = unescapeNewlines(antipattern.whyWrong);
   const summary = unescapeNewlines(antipattern.summary);
