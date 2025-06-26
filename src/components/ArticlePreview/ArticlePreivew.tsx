@@ -6,19 +6,16 @@ import dayjs from "dayjs";
 import React from "react";
 import { Badge } from "@/shared/ui";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function ArticlePreview({ antipattern, index }: { antipattern: Antipattern; index: number }) {
-  const router = useRouter();
   const date = dayjs(toDate(antipattern.updatedAt)).format("YYYY-MM-DD");
 
-  const handleOnClick = () => {
-    router.push(`/antipatterns/${antipattern.id || ""}`);
-  };
-
   return (
-    <div
+    <Link
       className="border-b border-systemBackground-border py-10 cursor-pointer transition-all duration-300 ease-in-out rounded-lg px-4 hover:translate-x-2"
-      onClick={handleOnClick}
+      href={`/antipatterns/${antipattern.id || ""}`}
+      prefetch={true}
     >
       <div className="flex justify-between items-center">
         <span className="text-label-secondary text-captionSmall">{date}</span>
@@ -50,6 +47,6 @@ export default function ArticlePreview({ antipattern, index }: { antipattern: An
           </div>
         </div>
       )}
-    </div>
+    </Link>
   );
 }
