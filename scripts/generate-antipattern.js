@@ -41,6 +41,26 @@ const ai = new GoogleGenAI({
   apiKey: process.env.GOOGLE_AI_KEY,
 });
 
+// Firebase에서 프롬프트 템플릿 조회
+const getPromptTemplate = async () => {
+  try {
+    const promptRef = db.collection("config").doc("ai-prompt");
+    const promptDoc = await promptRef.get();
+
+    if (!promptDoc.exists) {
+      console.error("❌ AI 프롬프트 템플릿이 Firebase에 설정되지 않았습니다.");
+      console.log("Firebase의 'config' 컬렉션에 'ai-prompt' 문서를 생성하고 프롬프트를 설정해주세요.");
+      process.exit(1);
+    }
+
+    const promptData = promptDoc.data();
+    return promptData.template || "";
+  } catch (error) {
+    console.error("프롬프트 템플릿 조회 실패:", error);
+    process.exit(1);
+  }
+};
+
 // 기존 안티패턴 조회
 const getExistingAntipatterns = async () => {
   try {
@@ -76,48 +96,17 @@ const analyzeTagFrequency = (antipatterns) => {
 };
 
 // AI 프롬프트 생성
-const createPrompt = (existingAntipatterns, overusedTags) => {
+const createPrompt = async (existingAntipatterns, overusedTags) => {
+  const promptTemplate = await getPromptTemplate();
+
   const existingInfo = existingAntipatterns
     .map((ap, index) => `${index + 1}. 제목: ${ap.title}, 요약: ${ap.summary}, 태그: ${ap.tags.join(", ")}`)
     .join("\n");
 
-  return `너는 프론트엔드 안티패턴 학습 콘텐츠를 생성하는 AI야.
-
-⚠️ 매우 중요한 제약사항:
-1. 아래 기존에 생성된 안티패턴들과 절대 중복되지 않는 새로운 안티패턴을 만들어야 해.
-2. 제목, 내용, 개념이 비슷하거나 유사한 것은 절대 생성하지 마.
-3. 최근에 자주 사용된 태그들(${overusedTags.join(", ")})은 피해서 다른 태그 조합을 사용해줘.
-4. 링크는 실제로 열리는 링크만 포함되어야 하고, 내용과 관련이 있는 문서여야만 해.
-4. 바로 파싱할거니까 코드블록 없이 응답해줘.
-
-기존 안티패턴 목록:
-${existingInfo}
-
-위 목록과 완전히 다른 새로운 안티패턴을 아래 형식으로 한 개만 만들어줘. 
-
-{
-  "id": "오늘의 날짜와 시간",
-  "title": "안티패턴 제목 (이모지 포함 가능)",
-  "whyWrong": "왜 이 패턴이 문제인지 설명",
-  "howToFix": "어떻게 수정해야 하는지 설명",
-  "summary": "간단한 요약",
-  "beforeCode": "문제가 있는 코드 예시",
-  "afterCode": "수정된 코드 예시",
-  "links": ["관련 링크1", "관련 링크2"],
-  "tags": ["JavaScript","TypeScript","React","CSS","HTML/접근성","UX","성능","보안","상태관리","테스트","빌드&번들링","애니메이션/UI","컴포넌트", "네이밍", "Lint/Formatter", "비동기처리", "아키텍처", "호환성", "CI/CD", "에러처리"],
-  "type": "프론트엔드|백엔드|데이터베이스|기타",
-  "difficulty": "초급|중급|고급",
-  "updatedAt": "오늘의 날짜와 시간"
-  "viewCount": 0,
-}
-
-내부 콘텐츠는 마크다운 문법으로 만들어.
-내용은 tags를 기반으로 실제 프론트엔드 실무에 흔히 있는 문제를 중심으로 유익하게 만들어줘.
-코드 예시는 React, JS 중심이며, 보안/접근성/렌더링/UX 등 여러 주제를 고루 포함할 수 있어야 해.
-이러한 현상이 왜 일어나는지 디테일하게 접근해줘. (예시: translate는 레이아웃을 발생시키지 않고 리페인트만 발생시키기 때문에 position보다 translate를 사용하는 것이 더 빠릅니다.)
-퀄리티가 중요하니까 신경써서 생성해줘.
-
-다시 한 번 강조하지만, 위 기존 목록과 절대 중복되지 않는 완전히 새로운 안티패턴을 만들어야 해.`;
+  // 프롬프트 템플릿의 플레이스홀더를 실제 데이터로 치환
+  return promptTemplate
+    .replace("{{EXISTING_ANTIPATTERNS}}", existingInfo)
+    .replace("{{OVERUSED_TAGS}}", overusedTags.join(", "));
 };
 
 // AI 응답 파싱
@@ -199,7 +188,7 @@ const generateAndSaveAntipattern = async () => {
 
     // 3. AI 프롬프트 생성 및 호출
     console.log("🤖 AI에게 안티패턴 생성 요청 중...");
-    const prompt = createPrompt(existingAntipatterns, overusedTags);
+    const prompt = await createPrompt(existingAntipatterns, overusedTags);
     const response = await ai.models.generateContent({ model: "gemini-2.5-flash", contents: prompt });
     const responseText = response.text;
 
