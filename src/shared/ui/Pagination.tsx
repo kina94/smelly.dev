@@ -1,4 +1,5 @@
 import * as React from "react";
+import Link from "next/link";
 import { ChevronLeft, ChevronRight, MoreHorizontal } from "lucide-react";
 
 import { cn } from "@/utils/etc";
@@ -28,11 +29,14 @@ PaginationItem.displayName = "PaginationItem";
 
 type PaginationLinkProps = {
   isActive?: boolean;
+  href: string;
 } & Pick<ButtonProps, "size"> &
-  React.ComponentProps<"a">;
+  Omit<React.ComponentProps<typeof Link>, "href">;
 
-const PaginationLink = ({ className, isActive, size = "icon", ...props }: PaginationLinkProps) => (
-  <a
+const PaginationLink = ({ className, isActive, size = "icon", href, ...props }: PaginationLinkProps) => (
+  <Link
+    href={href}
+    prefetch={false}
     aria-current={isActive ? "page" : undefined}
     className={cn(
       buttonVariants({
@@ -47,8 +51,9 @@ const PaginationLink = ({ className, isActive, size = "icon", ...props }: Pagina
 );
 PaginationLink.displayName = "PaginationLink";
 
-const PaginationPrevious = ({ className, ...props }: React.ComponentProps<typeof PaginationLink>) => (
+const PaginationPrevious = ({ className, href, ...props }: React.ComponentProps<typeof PaginationLink>) => (
   <PaginationLink
+    href={href}
     aria-label="Go to previous page"
     size="default"
     className={cn("gap-1 pl-2.5", "hover:text-gray-700", className)}
@@ -60,8 +65,9 @@ const PaginationPrevious = ({ className, ...props }: React.ComponentProps<typeof
 );
 PaginationPrevious.displayName = "PaginationPrevious";
 
-const PaginationNext = ({ className, ...props }: React.ComponentProps<typeof PaginationLink>) => (
+const PaginationNext = ({ className, href, ...props }: React.ComponentProps<typeof PaginationLink>) => (
   <PaginationLink
+    href={href}
     aria-label="Go to next page"
     size="default"
     className={cn("gap-1 pr-2.5", "hover:text-gray-700", className)}

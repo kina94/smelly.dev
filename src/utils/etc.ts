@@ -88,7 +88,7 @@ export function getDifficultyVariant(difficulty: string): "yellow" | "green" | "
  * @param maxVisible - 최대 표시할 페이지 수
  * @returns 표시할 페이지 번호 배열
  */
-export function getVisiblePages(currentPage: number, totalPages: number, maxVisible: number = 5): number[] {
+export function getVisiblePages(currentPage: number, totalPages: number, maxVisible: number = 10): number[] {
   const pages = [];
 
   if (totalPages <= maxVisible) {

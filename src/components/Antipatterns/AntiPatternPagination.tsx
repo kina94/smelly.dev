@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { getVisiblePages } from "@/utils/etc";
 import {
   Pagination,
@@ -25,17 +25,12 @@ export default function AntipatternPagination({
   hasNextPage,
   hasPrevPage,
 }: AntipatternPaginationProps) {
-  const router = useRouter();
   const searchParams = useSearchParams();
 
   const createPageURL = (pageNumber: number) => {
     const params = new URLSearchParams(searchParams?.toString() || "");
     params.set("page", pageNumber.toString());
     return `?${params.toString()}`;
-  };
-
-  const handlePageChange = (pageNumber: number) => {
-    router.push(createPageURL(pageNumber));
   };
 
   const visiblePages = getVisiblePages(currentPage, totalPages);
@@ -47,13 +42,6 @@ export default function AntipatternPagination({
         <PaginationItem>
           <PaginationPrevious
             href={hasPrevPage ? createPageURL(currentPage - 1) : "#"}
-            onClick={(e) => {
-              if (!hasPrevPage) {
-                e.preventDefault();
-                return;
-              }
-              handlePageChange(currentPage - 1);
-            }}
             className={!hasPrevPage ? "pointer-events-none opacity-50" : ""}
           />
         </PaginationItem>
@@ -62,15 +50,7 @@ export default function AntipatternPagination({
         {visiblePages[0] > 1 && (
           <>
             <PaginationItem>
-              <PaginationLink
-                href={createPageURL(1)}
-                onClick={(e) => {
-                  e.preventDefault();
-                  handlePageChange(1);
-                }}
-              >
-                1
-              </PaginationLink>
+              <PaginationLink href={createPageURL(1)}>1</PaginationLink>
             </PaginationItem>
             {visiblePages[0] > 2 && (
               <PaginationItem>
@@ -83,14 +63,7 @@ export default function AntipatternPagination({
         {/* 페이지 번호들 */}
         {visiblePages.map((page) => (
           <PaginationItem key={page}>
-            <PaginationLink
-              href={createPageURL(page)}
-              onClick={(e) => {
-                e.preventDefault();
-                handlePageChange(page);
-              }}
-              isActive={page === currentPage}
-            >
+            <PaginationLink href={createPageURL(page)} isActive={page === currentPage}>
               {page}
             </PaginationLink>
           </PaginationItem>
@@ -105,15 +78,7 @@ export default function AntipatternPagination({
               </PaginationItem>
             )}
             <PaginationItem>
-              <PaginationLink
-                href={createPageURL(totalPages)}
-                onClick={(e) => {
-                  e.preventDefault();
-                  handlePageChange(totalPages);
-                }}
-              >
-                {totalPages}
-              </PaginationLink>
+              <PaginationLink href={createPageURL(totalPages)}>{totalPages}</PaginationLink>
             </PaginationItem>
           </>
         )}
@@ -122,13 +87,6 @@ export default function AntipatternPagination({
         <PaginationItem>
           <PaginationNext
             href={hasNextPage ? createPageURL(currentPage + 1) : "#"}
-            onClick={(e) => {
-              if (!hasNextPage) {
-                e.preventDefault();
-                return;
-              }
-              handlePageChange(currentPage + 1);
-            }}
             className={!hasNextPage ? "pointer-events-none opacity-50" : ""}
           />
         </PaginationItem>
