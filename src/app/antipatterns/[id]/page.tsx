@@ -1,18 +1,25 @@
-import { adminDb } from "@/shared/config/firebase-admin";
 import Article from "@/components/Article/Article";
 import React from "react";
 
 async function getAntipattern(id: string) {
-  const antipattern = await adminDb.collection("antipatterns").doc(id).get();
-  const data = antipattern.data();
-
-  // Firebase 데이터를 직렬화 가능한 형태로 변환
-  return JSON.parse(
-    JSON.stringify({
-      ...data,
-      id: antipattern.id, // 문서 ID를 사용
-    }),
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"}/api/antipatterns/${id}`,
+    {
+      cache: "no-store",
+    },
   );
+
+  if (!response.ok) {
+    throw new Error("안티패턴을 가져오는데 실패했습니다.");
+  }
+
+  const data = await response.json();
+
+  if (!data.success) {
+    throw new Error(data.error || "안티패턴을 가져오는데 실패했습니다.");
+  }
+
+  return data.antipattern;
 }
 
 const AntiPatternDetail = async ({ params }: { params: Promise<{ id: string }> }) => {

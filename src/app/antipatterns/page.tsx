@@ -8,11 +8,13 @@ interface SearchParams {
 }
 
 async function getAntipatterns(page: number = 1, limit: number = 10) {
+  console.log("call");
   try {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"}/api/antipattern/list?page=${page}&limit=${limit}`,
-      { cache: "no-store" },
-    );
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+    const response = await fetch(`${baseUrl}/api/antipatterns?page=${page}&limit=${limit}`, {
+      method: "GET",
+      cache: "no-store",
+    });
 
     if (!response.ok) {
       throw new Error("Failed to fetch antipatterns");
