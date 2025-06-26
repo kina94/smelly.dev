@@ -1,9 +1,8 @@
-import Article from "@/widgets/Article";
-import ArticleSkeleton from "@/widgets/ArticleSkeleton";
+import { Article, ArticleSkeleton } from "@/components/Article";
 import { adminDb } from "@/shared/config/firebase-admin";
 import { Antipattern } from "@/shared/types";
-import { Suspense } from "react";
 import ErrorMessage from "@/shared/ui/ErrorMessage";
+import { Suspense } from "react";
 
 export async function getLatestAntipattern(): Promise<Antipattern | null> {
   try {
@@ -36,27 +35,17 @@ export async function getLatestAntipattern(): Promise<Antipattern | null> {
   }
 }
 
-async function AntipatternContent() {
-  try {
-    const latestAntipattern = await getLatestAntipattern();
+export default async function Home() {
+  const latestAntipattern = await getLatestAntipattern();
 
-    if (!latestAntipattern) {
-      return <p className="text-gray-500 text-center">표시할 안티패턴이 없습니다.</p>;
-    }
-
-    return <Article antipattern={latestAntipattern} />;
-  } catch (e) {
-    // Server Component에서 에러 메시지만 전달
-    const errorMessage = e instanceof Error ? e.message : "알 수 없는 오류가 발생했습니다.";
-    return <ErrorMessage message={errorMessage} />;
+  if (!latestAntipattern) {
+    return <ErrorMessage message="표시할 안티패턴이 없습니다." />;
   }
-}
 
-export default function Home() {
   return (
     <div className="h-[calc(100vh-280px)]">
       <Suspense fallback={<ArticleSkeleton />}>
-        <AntipatternContent />
+        <Article antipattern={latestAntipattern} />
       </Suspense>
     </div>
   );

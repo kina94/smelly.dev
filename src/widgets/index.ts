@@ -1,3 +1,3 @@
 // Widget components
 export * from "./Footer";
-export { default as ArticleSkeleton } from "./ArticleSkeleton";
+export { default as ArticleSkeleton } from "../components/Article/Skeleton";

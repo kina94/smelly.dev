@@ -41,18 +41,13 @@ export async function GET(request: Request) {
       snapshot = await antipatternsRef.offset(offset).limit(limit).get();
     }
 
-    console.log("Firebase 조회 결과 - 문서 개수:", snapshot.docs.length);
-
     const antipatterns = snapshot.docs.map((doc) => {
       const data = doc.data();
-      console.log("문서 데이터:", { id: doc.id, ...data });
       return {
-        id: doc.id,
         ...data,
+        id: doc.id,
       };
     });
-
-    console.log("최종 반환할 안티패턴 개수:", antipatterns.length);
 
     return NextResponse.json({
       success: true,
