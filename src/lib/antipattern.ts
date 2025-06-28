@@ -4,41 +4,35 @@ import { Antipattern } from "@/shared/types";
 import { serializeFirebaseData } from "@/utils/firebase";
 
 /**
- * 단일 안티패턴을 가져오는 함수
+ * 단일 안티패턴을 가져오는 함수 (성능 최적화)
  * @param id - 안티패턴 ID
  * @returns 안티패턴 데이터
  */
 export async function getAntipattern(id: string): Promise<Antipattern> {
   try {
     const antipatternRef = adminDb.collection("antipatterns").doc(id);
+    const doc = await antipatternRef.get();
 
-    // 트랜잭션을 사용하여 조회수를 안전하게 증가시키고 데이터를 가져옴
-    const result = await adminDb.runTransaction(async (transaction) => {
-      const doc = await transaction.get(antipatternRef);
+    if (!doc.exists) {
+      throw new Error("해당 안티패턴을 찾을 수 없습니다.");
+    }
 
-      if (!doc.exists) {
-        throw new Error("해당 안티패턴을 찾을 수 없습니다.");
-      }
+    const data = doc.data();
 
-      const data = doc.data();
-      const currentViewCount = data?.viewCount || 0;
-      const newViewCount = currentViewCount + 1;
-
-      // 조회수 증가
-      transaction.update(antipatternRef, {
-        viewCount: newViewCount,
+    // 조회수 업데이트는 백그라운드에서 처리 (성능 향상)
+    antipatternRef
+      .update({
+        viewCount: (data?.viewCount || 0) + 1,
         lastViewed: new Date(),
-      });
-
-      return {
-        ...data,
-        id: doc.id,
-        viewCount: newViewCount,
-      } as Antipattern;
-    });
+      })
+      .catch(console.error); // 에러가 발생해도 메인 로직에 영향 없음
 
     // Firebase 데이터를 직렬화 가능한 형태로 변환
-    return serializeFirebaseData(result);
+    return serializeFirebaseData({
+      ...data,
+      id: doc.id,
+      viewCount: (data?.viewCount || 0) + 1, // 클라이언트에는 즉시 반영
+    } as Antipattern);
   } catch (error) {
     console.error("Error:", error);
     throw new Error("안티패턴 조회 중 오류가 발생했습니다.");
