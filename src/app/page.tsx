@@ -4,9 +4,6 @@ import { getLatestAntipattern } from "@/lib/antipattern";
 import { Suspense } from "react";
 import type { Metadata } from "next";
 
-// 캐싱 시간 설정 (1시간)
-export const revalidate = 3600;
-
 export const metadata: Metadata = {
   title: "프론트엔드 안티패턴 가이드",
   description:
