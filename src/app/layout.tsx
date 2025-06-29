@@ -49,7 +49,7 @@ export default function RootLayout({
         <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS || ""} />
         <Header />
         <main className="mt-20 flex-1">
-          <div className="w-full px-4 py-8 h-full flex flex-col">
+          <div className="w-full px-4 py-8 mb-8 h-full flex flex-col">
             <div className="h-full flex flex-col overflow-x-hidden">
               <div className="max-w-4xl mx-auto w-full">{children}</div>
             </div>
