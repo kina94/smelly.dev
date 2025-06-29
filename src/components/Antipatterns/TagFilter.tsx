@@ -5,9 +5,10 @@ import { useRouter, useSearchParams } from "next/navigation";
 interface TagFilterProps {
   availableTags: string[];
   selectedTags: string[];
+  totalCount?: number;
 }
 
-export default function TagFilter({ availableTags, selectedTags }: TagFilterProps) {
+export default function TagFilter({ availableTags, selectedTags, totalCount }: TagFilterProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -46,7 +47,15 @@ export default function TagFilter({ availableTags, selectedTags }: TagFilterProp
   return (
     <div className="mb-6">
       <div className="flex items-center justify-between mb-3">
-        <h3 className="text-lg font-semibold text-gray-900">태그 필터</h3>
+        <div>
+          <h3 className="text-lg font-semibold text-gray-900">태그 필터</h3>
+          {totalCount !== undefined && (
+            <p className="text-sm text-gray-600 mt-1">
+              총 {totalCount}개의 안티패턴
+              {selectedTags.length > 0 && ` (선택된 태그: ${selectedTags.join(", ")})`}
+            </p>
+          )}
+        </div>
         {selectedTags.length > 0 && (
           <button onClick={clearAllTags} className="text-sm text-blue-600 hover:text-blue-800 underline">
             모든 태그 해제
@@ -67,12 +76,6 @@ export default function TagFilter({ availableTags, selectedTags }: TagFilterProp
           </button>
         ))}
       </div>
-
-      {selectedTags.length > 0 && (
-        <div className="mt-3">
-          <p className="text-sm text-gray-600 mb-2">선택된 태그: {selectedTags.join(", ")}</p>
-        </div>
-      )}
     </div>
   );
 }
