@@ -104,6 +104,7 @@ export default function Article({ antipattern }: { antipattern: Antipattern }) {
               borderRadius: 14,
               fontSize: 12,
               padding: 12,
+              margin: 0,
             }}
           >
             {stripMarkdownCodeBlock(antipattern.beforeCode || "")}
@@ -118,7 +119,7 @@ export default function Article({ antipattern }: { antipattern: Antipattern }) {
           <SyntaxHighlighter
             language="javascript"
             style={prism}
-            customStyle={{ borderRadius: 14, fontSize: 12, padding: 12 }}
+            customStyle={{ borderRadius: 14, fontSize: 12, padding: 12, margin: 0 }}
             wrapLongLines={true}
           >
             {stripMarkdownCodeBlock(antipattern.afterCode || "")}
