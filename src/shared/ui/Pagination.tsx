@@ -44,7 +44,7 @@ const PaginationLink = ({ className, isActive, size = "icon", href, ...props }: 
         size,
       }),
       className,
-      "hover:text-gray-700",
+      "hover:text-label-quaternary text-label-secondary",
     )}
     {...props}
   />

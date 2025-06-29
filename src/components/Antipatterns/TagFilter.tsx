@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/shared/ui/accordion";
 
 export default function TagFilter({
   availableTags,
@@ -46,27 +47,41 @@ export default function TagFilter({
   };
 
   return (
-    <div className="mb-6">
-      <div className="flex items-center justify-between mb-3">
-        <h3 className="text-lg font-semibold text-gray-900">태그 필터</h3>
-        {/* {selectedTags.length > 0 && <button onClick={handleClearFilter}>필터 초기화</button>} */}
-      </div>
+    <Accordion type="single" collapsible className="w-full">
+      <AccordionItem value="tag-filter">
+        <AccordionTrigger className="!text-label-primary !text-subheadSemibold">태그 필터</AccordionTrigger>
+        <AccordionContent>
+          <div>
+            <div className="flex mb-4 justify-between items-center">
+              <span className="text-captionRegular text-label-tertiary">{selectedTags.length}개 선택됨</span>
+              {selectedTags.length > 0 && (
+                <button
+                  onClick={handleClearFilter}
+                  className="text-captionRegular text-systemPink hover:text-systemPink/80 transition-colors"
+                >
+                  모두 해제
+                </button>
+              )}
+            </div>
 
-      <div className="flex flex-wrap gap-2">
-        {availableTags.map((tag) => (
-          <button
-            key={tag}
-            onClick={() => handleTagClick(tag)}
-            className={`px-3 py-1 rounded-full text-sm font-medium transition-colors ${
-              selectedTags.includes(tag)
-                ? "bg-systemPink text-white"
-                : "bg-white text-captionSmall text-zinc-600 hover:bg-gray-100 outline outline-1 outline-systemGray-4"
-            }`}
-          >
-            {tag}
-          </button>
-        ))}
-      </div>
-    </div>
+            <div className="flex flex-wrap gap-2">
+              {availableTags.map((tag) => (
+                <button
+                  key={tag}
+                  onClick={() => handleTagClick(tag)}
+                  className={`px-3 py-1 rounded-full text-sm font-medium transition-colors ${
+                    selectedTags.includes(tag)
+                      ? "bg-systemPink text-white"
+                      : "bg-white text-captionSmall text-zinc-600 hover:bg-gray-100 outline outline-1 outline-systemGray-4"
+                  }`}
+                >
+                  {tag}
+                </button>
+              ))}
+            </div>
+          </div>
+        </AccordionContent>
+      </AccordionItem>
+    </Accordion>
   );
 }
