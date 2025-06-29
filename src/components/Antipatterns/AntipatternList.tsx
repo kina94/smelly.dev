@@ -3,9 +3,9 @@ import { ArticlePreview } from "@/components/ArticlePreview";
 import { getAntipatterns } from "@/lib/antipattern";
 import { Antipattern } from "@/shared/types";
 
-export default async function List({ page }: { page: number }) {
+export default async function List({ page, tags }: { page: number; tags: string[] }) {
   const limit = 10;
-  const { antipatterns, pagination } = await getAntipatterns(page, limit);
+  const { antipatterns, pagination } = await getAntipatterns(page, limit, tags);
 
   return (
     <>

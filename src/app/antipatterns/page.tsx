@@ -5,6 +5,7 @@ import { AntipatternList } from "@/components/Antipatterns";
 
 interface SearchParams {
   page?: string;
+  tags?: string;
 }
 
 export const metadata: Metadata = {
@@ -24,10 +25,11 @@ export const metadata: Metadata = {
 
 export default async function AntipatternsPage({ searchParams }: { searchParams: SearchParams }) {
   const page = parseInt(searchParams.page || "1");
+  const tags = searchParams.tags ? searchParams.tags.split(",").filter(Boolean) : [];
 
   return (
-    <Suspense key={page} fallback={<ArticlePreviewSkeleton />}>
-      <AntipatternList page={page} />
+    <Suspense key={`${page}-${tags.join(",")}`} fallback={<ArticlePreviewSkeleton />}>
+      <AntipatternList page={page} tags={tags} />
     </Suspense>
   );
 }

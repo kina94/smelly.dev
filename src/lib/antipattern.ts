@@ -2,6 +2,7 @@
 import { adminDb } from "@/shared/config/firebase-admin";
 import { Antipattern } from "@/shared/types";
 import { serializeFirebaseData } from "@/utils/firebase";
+import { Query, DocumentData, QueryDocumentSnapshot } from "firebase-admin/firestore";
 
 /**
  * 단일 안티패턴을 가져오는 함수 (성능 최적화)
@@ -43,9 +44,10 @@ export async function getAntipattern(id: string): Promise<Antipattern> {
  * 안티패턴 목록을 가져오는 함수
  * @param page - 페이지 번호
  * @param limit - 페이지당 항목 수
+ * @param tags - 필터링할 태그 배열
  * @returns 안티패턴 목록과 페이지네이션 정보
  */
-export async function getAntipatterns(page: number = 1, limit: number = 10) {
+export async function getAntipatterns(page: number = 1, limit: number = 10, tags: string[] = []) {
   try {
     // 유효성 검사
     if (page < 1) {
@@ -59,8 +61,15 @@ export async function getAntipatterns(page: number = 1, limit: number = 10) {
     // Firebase에서 안티패턴 조회
     const antipatternsRef = adminDb.collection("antipatterns");
 
-    // 전체 문서 수 조회
-    const totalSnapshot = await antipatternsRef.get();
+    // 태그 필터링이 있는 경우
+    let query: Query<DocumentData> = antipatternsRef;
+    if (tags.length > 0) {
+      // 태그 배열에 포함된 문서들만 필터링
+      query = query.where("tags", "array-contains-any", tags);
+    }
+
+    // 전체 문서 수 조회 (필터링 적용)
+    const totalSnapshot = await query.get();
     const totalCount = totalSnapshot.size;
 
     // 페이지네이션 계산
@@ -70,13 +79,13 @@ export async function getAntipatterns(page: number = 1, limit: number = 10) {
     let snapshot;
     try {
       // updatedAt 필드로 정렬하여 페이지네이션 적용
-      snapshot = await antipatternsRef.orderBy("updatedAt", "desc").offset(offset).limit(limit).get();
+      snapshot = await query.orderBy("updatedAt", "desc").offset(offset).limit(limit).get();
     } catch {
       // 정렬 실패 시 모든 문서 조회 후 클라이언트에서 정렬
-      snapshot = await antipatternsRef.offset(offset).limit(limit).get();
+      snapshot = await query.offset(offset).limit(limit).get();
     }
 
-    const antipatterns = snapshot.docs.map((doc) => {
+    const antipatterns = snapshot.docs.map((doc: QueryDocumentSnapshot<DocumentData>) => {
       const data = doc.data();
       return {
         ...data,
