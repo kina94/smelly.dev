@@ -11,7 +11,7 @@ export default function ArticlePreview({ antipattern, index }: { antipattern: An
 
   return (
     <Link
-      className="block cursor-pointer transition-all duration-300 ease-in-out rounded-lg hover:translate-x-2 first:pt-0 py-8"
+      className="block cursor-pointer transition-all duration-300 ease-in-out rounded-lg hover:translate-x-2 py-8"
       href={`/antipatterns/${antipattern.id || ""}`}
       prefetch={true}
     >

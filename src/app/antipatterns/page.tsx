@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import ArticlePreviewSkeleton from "@/components/Antipatterns/Skeleton";
 import { AntipatternList, TagFilter } from "@/components/Antipatterns";
-import { getAllTags, getAntipatterns } from "@/lib/antipattern";
+import { getAllTags } from "@/lib/antipattern";
 
 interface SearchParams {
   page?: string;
@@ -52,12 +52,9 @@ export default async function AntipatternsPage({ searchParams }: { searchParams:
   // 사용 가능한 모든 태그 가져오기
   const availableTags = await getAllTags();
 
-  // 현재 필터링된 결과의 총 개수 가져오기
-  const { pagination } = await getAntipatterns(page, 10, tags);
-
   return (
     <div>
-      <TagFilter availableTags={availableTags} selectedTags={tags} totalCount={pagination.totalCount} />
+      <TagFilter availableTags={availableTags} selectedTags={tags} />
       <Suspense key={`${page}-${tags.join(",")}`} fallback={<ArticlePreviewSkeleton />}>
         <AntipatternList page={page} tags={tags} />
       </Suspense>

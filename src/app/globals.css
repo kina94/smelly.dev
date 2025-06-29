@@ -25,7 +25,7 @@
     @apply bg-white;
     @apply flex;
     @apply flex-col;
-    @apply overflow-x-hidden;
+    @apply overflow-y-scroll;
   }
   html,
   body,
@@ -69,10 +69,5 @@
 
   .dark ::-webkit-scrollbar-thumb:hover {
     background-color: #9ca3af;
-  }
-
-  /* 스크롤바가 항상 표시되도록 설정하여 레이아웃 시프트 방지 */
-  html {
-    overflow-y: scroll;
   }
 }
