@@ -6,7 +6,7 @@ import { Badge } from "@/shared/ui";
 import { MarkdownRenderer } from "@/widgets";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { prism } from "react-syntax-highlighter/dist/esm/styles/prism";
-import { Link as LinkIcon } from "lucide-react";
+import { Code2, Link as LinkIcon } from "lucide-react";
 
 export default function Article({ antipattern }: { antipattern: Antipattern }) {
   const date = formatDate(antipattern.updatedAt);
@@ -93,7 +93,10 @@ export default function Article({ antipattern }: { antipattern: Antipattern }) {
         </div>
 
         <div className="flex flex-col mb-8">
-          <h2 className="text-label-primary text-primary mb-4">Before Code</h2>
+          <div className="flex items-center gap-2 mb-4">
+            <Code2 className="text-systemRed" />
+            <h2 className="text-label-primary text-primary pb-1">Before Code (Bad)</h2>
+          </div>
           <SyntaxHighlighter
             language="javascript"
             style={prism}
@@ -107,8 +110,11 @@ export default function Article({ antipattern }: { antipattern: Antipattern }) {
           </SyntaxHighlighter>
         </div>
 
-        <div className="flex flex-col gap-2 mb-8">
-          <h2 className="text-label-primary text-primary pb-1">After Code</h2>
+        <div className="flex flex-col mb-8">
+          <div className="flex items-center gap-2 mb-4">
+            <Code2 className="text-systemGreen" />
+            <h2 className="text-label-primary text-primary pb-1">After Code (Good)</h2>
+          </div>
           <SyntaxHighlighter
             language="javascript"
             style={prism}
