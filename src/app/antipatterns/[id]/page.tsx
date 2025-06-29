@@ -26,7 +26,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     openGraph: {
       title: antipattern.title,
       description: `${antipattern.title} - ${antipattern.summary}`,
-      url: `https://smelly.dev/antipatterns/${id}`,
+      url: `https://smelly-dev.vercel.app/antipatterns/${id}`,
       type: "article",
       authors: ["Smelly.dev"],
     },

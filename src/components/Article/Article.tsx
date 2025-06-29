@@ -27,11 +27,11 @@ export default function Article({ antipattern }: { antipattern: Antipattern }) {
     publisher: {
       "@type": "Organization",
       name: "Smelly.dev",
-      url: "https://smelly.dev",
+      url: "https://smelly-dev.vercel.app",
     },
     mainEntityOfPage: {
       "@type": "WebPage",
-      "@id": `https://smelly.dev/antipatterns/${antipattern.id}`,
+      "@id": `https://smelly-dev.vercel.app/antipatterns/${antipattern.id}`,
     },
     articleSection: "프론트엔드 안티패턴",
     keywords: antipattern.tags?.join(", ") || "",

@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "프론트엔드 안티패턴 가이드",
     description: "자주 발생하는 프론트엔드 안티패턴을 매일 하나씩 소개합니다.",
-    url: "https://smelly.dev",
+    url: "https://smelly-dev.vercel.app/",
   },
   twitter: {
     title: "프론트엔드 안티패턴 가이드",

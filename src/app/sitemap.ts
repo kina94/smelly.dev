@@ -2,7 +2,7 @@ import { MetadataRoute } from "next";
 import { getAntipatterns } from "@/lib/antipattern";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = "https://smelly.dev";
+  const baseUrl = "https://smelly-dev.vercel.app";
 
   // 정적 페이지들
   const staticPages = [
