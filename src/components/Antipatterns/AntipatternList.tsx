@@ -9,9 +9,17 @@ export default async function List({ cursor, tags }: { cursor?: string; tags: st
 
   return (
     <>
-      {result.antipatterns?.map((antipattern: Antipattern, index: number) => {
-        const descendingIndex = result.antipatterns.length - index;
-        return <ArticlePreview key={antipattern.id} antipattern={antipattern} index={descendingIndex} />;
+      {!cursor && (
+        <div className="pt-4 bg-systemBackground-secondary rounded-lg">
+          <p className="text-label-secondary text-captionMedium">
+            총 <span className="font-semibold text-label-primary">{result.pagination.totalCount}</span>개의 안티패턴이
+            검색되었습니다.
+          </p>
+        </div>
+      )}
+
+      {result.antipatterns?.map((antipattern: Antipattern) => {
+        return <ArticlePreview key={antipattern.id} antipattern={antipattern} />;
       })}
       <div className="pt-3">
         <AntiPatternPagination

@@ -1,6 +1,6 @@
 // Firebase 직접 접근 유틸리티
 import { adminDb } from "@/shared/config/firebase-admin";
-import { Antipattern } from "@/shared/types";
+import { Antipattern, AntipatternsResult } from "@/shared/types";
 import { Query, DocumentData, QueryDocumentSnapshot } from "firebase-admin/firestore";
 
 /**
@@ -62,7 +62,11 @@ export async function getAntipattern(id: string): Promise<Antipattern> {
  * @param tags - 필터링할 태그 배열
  * @returns 안티패턴 목록과 페이지네이션 정보
  */
-export async function getAntipatterns(limit: number = 10, cursor?: string, tags: string[] = []) {
+export async function getAntipatterns(
+  limit: number = 10,
+  cursor?: string,
+  tags: string[] = [],
+): Promise<AntipatternsResult> {
   try {
     // 유효성 검사
     if (limit < 1 || limit > 100) {
@@ -77,6 +81,13 @@ export async function getAntipatterns(limit: number = 10, cursor?: string, tags:
     if (tags.length > 0) {
       // 태그 배열에 포함된 문서들만 필터링
       query = query.where("tags", "array-contains-any", tags);
+    }
+
+    // 총 개수 조회 (첫 페이지에서만)
+    let totalCount = 0;
+    if (!cursor) {
+      const countSnapshot = await query.count().get();
+      totalCount = countSnapshot.data().count;
     }
 
     // updatedAt 기준 내림차순 정렬 (복합 색인 활용)
@@ -110,7 +121,7 @@ export async function getAntipatterns(limit: number = 10, cursor?: string, tags:
     }) as Antipattern[];
 
     // 다음 페이지 커서 생성 (마지막 문서의 ID)
-    const nextCursor = hasNextPage ? antipatterns[antipatterns.length - 1]?.id : null;
+    const nextCursor = hasNextPage ? antipatterns[antipatterns.length - 1]?.id || null : null;
 
     return {
       success: true,
@@ -119,6 +130,7 @@ export async function getAntipatterns(limit: number = 10, cursor?: string, tags:
         hasNextPage,
         nextCursor,
         limit,
+        totalCount,
       },
     };
   } catch (error) {
@@ -130,6 +142,7 @@ export async function getAntipatterns(limit: number = 10, cursor?: string, tags:
         hasNextPage: false,
         nextCursor: null,
         limit: 10,
+        totalCount: 0,
       },
     };
   }

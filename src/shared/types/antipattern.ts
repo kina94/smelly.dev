@@ -14,3 +14,16 @@ export interface Antipattern {
   viewCount: number;
   lastViewed: string;
 }
+
+export interface PaginationInfo {
+  hasNextPage: boolean;
+  nextCursor: string | null;
+  limit: number;
+  totalCount: number;
+}
+
+export interface AntipatternsResult {
+  success: boolean;
+  antipatterns: Antipattern[];
+  pagination: PaginationInfo;
+}
