@@ -42,43 +42,49 @@ export default function TagFilter({ selectedTags }: { selectedTags: string[] }) 
   };
 
   return (
-    <div>
-      <Accordion type="single" className="w-full">
-        <AccordionItem value="tag-filter">
-          <AccordionTrigger className="!text-label-primary !text-subheadSemibold">태그 필터</AccordionTrigger>
-          <AccordionContent>
-            <div>
-              <div className="flex mb-4 justify-between items-center">
-                <span className="text-captionRegular text-label-tertiary">{selectedTags.length}개 선택됨</span>
-                {selectedTags.length > 0 && (
-                  <button
-                    onClick={handleClearFilter}
-                    className="text-captionRegular text-systemPink hover:text-systemPink/80 transition-colors"
-                  >
-                    모두 해제
-                  </button>
-                )}
-              </div>
-
-              <div className="flex flex-wrap gap-2">
-                {AVAILABLE_TAGS.map((tag) => (
-                  <button
-                    key={tag}
-                    onClick={() => handleTagClick(tag)}
-                    className={`px-3 py-1 rounded-full text-sm font-medium transition-colors ${
-                      selectedTags.includes(tag)
-                        ? "bg-systemPink text-white"
-                        : "bg-white text-captionSmall text-zinc-600 hover:bg-gray-100 outline outline-1 outline-systemGray-4"
-                    }`}
-                  >
-                    {tag}
-                  </button>
-                ))}
-              </div>
+    <Accordion type="single" className="w-full" collapsible>
+      <AccordionItem value="tag-filter">
+        <AccordionTrigger className="!text-label-primary !text-subheadSemibold">
+          <div className="flex items-center">
+            태그 필터
+            {selectedTags.length > 0 && (
+              <span className="text-captionSmall text-systemPink bg-systemPink/10 px-2 py-1 rounded-full ml-2">
+                {selectedTags.length}개
+              </span>
+            )}
+          </div>
+        </AccordionTrigger>
+        <AccordionContent>
+          <div>
+            <div className="flex mb-4 justify-end items-center">
+              {selectedTags.length > 0 && (
+                <button
+                  onClick={handleClearFilter}
+                  className="text-captionRegular text-systemPink hover:text-systemPink/80 transition-colors"
+                >
+                  모두 해제
+                </button>
+              )}
             </div>
-          </AccordionContent>
-        </AccordionItem>
-      </Accordion>
-    </div>
+
+            <div className="flex flex-wrap gap-2">
+              {AVAILABLE_TAGS.map((tag) => (
+                <button
+                  key={tag}
+                  onClick={() => handleTagClick(tag)}
+                  className={`px-3 py-1 rounded-full text-sm font-medium transition-colors ${
+                    selectedTags.includes(tag)
+                      ? "bg-systemPink text-white"
+                      : "bg-white text-captionSmall text-zinc-600 hover:bg-gray-100 outline outline-1 outline-systemGray-4"
+                  }`}
+                >
+                  {tag}
+                </button>
+              ))}
+            </div>
+          </div>
+        </AccordionContent>
+      </AccordionItem>
+    </Accordion>
   );
 }
