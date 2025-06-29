@@ -4,7 +4,7 @@ export default function ArticlePreviewSkeleton() {
   return (
     <div>
       {Array.from({ length: 10 }).map((_, index) => (
-        <div key={index} className="first:pt-0 py-6 md:py-10">
+        <div key={index} className="first:pt-0 py-8">
           {/* Date and badges row */}
           <div className="flex justify-between items-center">
             {/* Date skeleton */}

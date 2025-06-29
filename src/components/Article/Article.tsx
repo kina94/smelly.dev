@@ -47,7 +47,7 @@ export default function Article({ antipattern }: { antipattern: Antipattern }) {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
       <div className="flex flex-col mb-8 pb-3 border-b border-systemBackground-border gap-3">
-        <span className="text-label-secondary text-captionSmall text-sm">{date}</span>
+        <span className="text-label-secondary text-captionSmall">{date}</span>
 
         <h1 className="text-label-primary text-hero break-words">{antipattern.title || "제목 없음"}</h1>
 

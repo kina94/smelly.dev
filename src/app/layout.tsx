@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import { Header } from "@/components/Layout";
+import { Footer, Header } from "@/components/Layout";
 import GoogleAnalytics from "@/widgets/GoogleAnalytics";
 
 const pretendard = localFont({
@@ -45,16 +45,17 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko" className={`${pretendard.variable} antialiased`}>
-      <body className={pretendard.className}>
+      <body className={`${pretendard.className} flex flex-col min-h-screen`}>
         <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS || ""} />
         <Header />
-        <main className="mt-20">
+        <main className="mt-20 flex-1">
           <div className="w-full px-4 py-8 h-full flex flex-col">
             <div className="h-full flex flex-col overflow-x-hidden">
               <div className="max-w-4xl mx-auto w-full">{children}</div>
             </div>
           </div>
         </main>
+        <Footer />
       </body>
     </html>
   );

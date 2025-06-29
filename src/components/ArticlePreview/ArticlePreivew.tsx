@@ -11,14 +11,11 @@ export default function ArticlePreview({ antipattern, index }: { antipattern: An
 
   return (
     <Link
-      className="block cursor-pointer transition-all duration-300 ease-in-out rounded-lg hover:translate-x-2 first:pt-0 py-10"
+      className="block cursor-pointer transition-all duration-300 ease-in-out rounded-lg hover:translate-x-2 first:pt-0 py-8"
       href={`/antipatterns/${antipattern.id || ""}`}
       prefetch={true}
     >
-      <div className="flex justify-between items-center">
-        <span className="text-label-secondary text-captionSmall">{date}</span>
-        <div className="flex gap-2"></div>
-      </div>
+      <span className="text-label-secondary text-captionSmall">{date}</span>
       <div className="flex flex-col gap-2">
         <h3 className="text-label-primary text-primary break-words">
           #{index}. {antipattern.title || "제목 없음"}

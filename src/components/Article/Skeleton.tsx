@@ -2,7 +2,7 @@ export default function PostCardSkeleton() {
   return (
     <div>
       {/* Header Section */}
-      <div className="flex flex-col mb-8 pb-3 border-b border-systemBackground-border gap-3">
+      <div className="flex flex-col mb-8 pb-3 border-b border-systemBackground-border gap-3 first:pt-0 py-10">
         <div className="flex justify-between items-center">
           {/* Date skeleton */}
           <div className="h-4 w-20 bg-gray-200 rounded animate-pulse"></div>
@@ -45,6 +45,15 @@ export default function PostCardSkeleton() {
         </div>
 
         {/* Summary Section */}
+        <div className="flex flex-col gap-2">
+          <div className="h-5 w-20 bg-gray-200 rounded animate-pulse"></div>
+          <div className="space-y-2">
+            <div className="h-4 w-full bg-gray-200 rounded animate-pulse"></div>
+            <div className="h-4 w-5/6 bg-gray-200 rounded animate-pulse"></div>
+            <div className="h-4 w-3/4 bg-gray-200 rounded animate-pulse"></div>
+          </div>
+        </div>
+
         <div className="flex flex-col gap-2">
           <div className="h-5 w-20 bg-gray-200 rounded animate-pulse"></div>
           <div className="space-y-2">
