@@ -44,7 +44,7 @@ const AntiPatternDetail = async ({ params }: { params: Promise<{ id: string }> }
 
   const antipattern = await getAntipattern(id);
 
-  return <Article key={id} antipattern={antipattern} />;
+  return <Article antipattern={antipattern} />;
 };
 
 export default AntiPatternDetail;

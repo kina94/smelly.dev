@@ -1,7 +1,6 @@
-import { Article, ArticleSkeleton } from "@/components/Article";
+import { Article } from "@/components/Article";
 import { ErrorMessage } from "@/widgets";
 import { getLatestAntipattern } from "@/lib/antipattern";
-import { Suspense } from "react";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -27,11 +26,5 @@ export default async function Home() {
     return <ErrorMessage message="표시할 안티패턴이 없습니다." />;
   }
 
-  return (
-    <>
-      <Suspense fallback={<ArticleSkeleton />}>
-        <Article antipattern={latestAntipattern} />
-      </Suspense>
-    </>
-  );
+  return <Article antipattern={latestAntipattern} />;
 }
