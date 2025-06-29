@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import { DynamicTitle } from "@/widgets";
 import { Header } from "@/components/Layout";
 import GoogleAnalytics from "@/widgets/GoogleAnalytics";
 
@@ -49,12 +48,9 @@ export default function RootLayout({
       <body className={pretendard.className}>
         <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS || ""} />
         <Header />
-        <main className="pt-16 md:pt-24 overflow-hidden">
+        <main className="mt-20">
           <div className="w-full px-4 py-8 h-full flex flex-col">
-            <div className="w-full">
-              <DynamicTitle />
-            </div>
-            <div className="h-full overflow-y-auto overflow-x-hidden flex flex-col">
+            <div className="h-full flex flex-col overflow-x-hidden">
               <div className="max-w-4xl mx-auto w-full">{children}</div>
             </div>
           </div>

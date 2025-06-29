@@ -3,6 +3,7 @@ import { twMerge } from "tailwind-merge";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
+import LocalizedFormat from "dayjs/plugin/localizedFormat";
 
 // Firebase Timestamp 타입 정의
 interface FirebaseTimestamp {
@@ -120,6 +121,7 @@ export function formatDate(date: FirebaseTimestamp | Date | null | undefined): s
   if (!date) return "";
   dayjs.extend(utc);
   dayjs.extend(timezone);
+  dayjs.extend(LocalizedFormat);
 
-  return dayjs.utc(toDate(date)).tz("Asia/Seoul").format("YYYY-MM-DD");
+  return dayjs.utc(toDate(date)).tz("Asia/Seoul").format("LL");
 }

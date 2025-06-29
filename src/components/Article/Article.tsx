@@ -1,5 +1,5 @@
 import { Antipattern } from "@/shared/types";
-import { unescapeNewlines, stripMarkdownCodeBlock, getDifficultyVariant, formatDate, toDate } from "@/utils/etc";
+import { unescapeNewlines, stripMarkdownCodeBlock, formatDate, toDate } from "@/utils/etc";
 
 import React from "react";
 import { Badge } from "@/shared/ui";
@@ -46,25 +46,14 @@ export default function Article({ antipattern }: { antipattern: Antipattern }) {
       {/* JSON-LD 구조화 데이터 */}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
-      <div className="sticky top-0 bg-white z-10 pb-3 md:pb-4 border-b border-systemBackground-border">
-        <div className="flex justify-between items-center">
-          <span className="text-label-secondary text-captionSmall text-xs md:text-sm">{date}</span>
-          <div className="flex gap-1 md:gap-2">
-            <Badge variant="default" className="text-xs">
-              {antipattern.type || "기타"}
-            </Badge>
-            <Badge variant={getDifficultyVariant(antipattern.difficulty || "중급")} className="text-xs">
-              {antipattern.difficulty || "중급"}
-            </Badge>
-          </div>
-        </div>
-        <h3 className="text-label-primary text-base md:text-large break-words mt-1 md:mt-2">
-          {antipattern.title || "제목 없음"}
-        </h3>
+      <div className="flex flex-col mb-8 pb-3 border-b border-systemBackground-border gap-3">
+        <span className="text-label-secondary text-captionSmall text-sm">{date}</span>
+
+        <h1 className="text-label-primary text-hero text-3xl break-words">{antipattern.title || "제목 없음"}</h1>
 
         {/* Tags */}
         {antipattern.tags && antipattern.tags.length > 0 && (
-          <div className="flex flex-wrap gap-1 md:gap-2 mt-2 md:mt-3">
+          <div className="flex flex-wrap gap-2 mb-3">
             {antipattern.tags.map((tag, index) => (
               <Badge key={index} variant="outline" className="text-xs">
                 {tag}
@@ -74,34 +63,34 @@ export default function Article({ antipattern }: { antipattern: Antipattern }) {
         )}
       </div>
 
-      <div className="pt-4 md:pt-6 space-y-6 md:space-y-8">
+      <div className="space-y-8">
         {summary && (
-          <div className="flex flex-col gap-2 md:gap-3 px-6 py-4 bg-[#f0f8ff] border border-systemBlue rounded-lg">
+          <div className="flex flex-col space-y-2 px-6 py-4 bg-[#f0f8ff] border border-systemBlue rounded-lg">
             <div className="flex items-center gap-2">
-              <h4 className="text-systemBlue font-semibold text-sm md:text-base">Summary</h4>
+              <h2 className="text-systemBlue text-subheadSemibold">Summary</h2>
             </div>
-            <div className="text-systemBlue text-sm md:text-bodyRegular leading-relaxed">
+            <div className="text-systemBlue text-bodyRegular">
               <MarkdownRenderer content={summary} />
             </div>
           </div>
         )}
 
-        <div className="flex flex-col gap-1 md:gap-2">
-          <h4 className="text-label-primary text-primary pb-1 text-sm md:text-base">Why Wrong?</h4>
-          <div className="text-label-primary text-sm md:text-bodyRegular">
+        <div className="flex flex-col mb-8">
+          <h2 className="text-label-primary text-primary mb-4">Why Wrong?</h2>
+          <div className="text-label-primary text-bodyRegular">
             <MarkdownRenderer content={whyWrong} />
           </div>
         </div>
 
-        <div className="flex flex-col gap-1 md:gap-2">
-          <h4 className="text-label-primary text-primary pb-1 text-sm md:text-base">How to Fix?</h4>
-          <div className="text-label-primary text-sm md:text-bodyRegular">
+        <div className="flex flex-col mb-8">
+          <h2 className="text-label-primary text-primary mb-4">How to Fix?</h2>
+          <div className="text-label-primary text-bodyRegular">
             <MarkdownRenderer content={fix} />
           </div>
         </div>
 
-        <div className="flex flex-col gap-1 md:gap-2">
-          <h4 className="text-label-primary text-primary pb-1 text-sm md:text-base">Before Code</h4>
+        <div className="flex flex-col mb-8">
+          <h2 className="text-label-primary text-primary mb-4">Before Code</h2>
           <SyntaxHighlighter
             language="javascript"
             style={prism}
@@ -115,8 +104,8 @@ export default function Article({ antipattern }: { antipattern: Antipattern }) {
           </SyntaxHighlighter>
         </div>
 
-        <div className="flex flex-col gap-1 md:gap-2">
-          <h4 className="text-label-primary text-primary pb-1 text-sm md:text-base">After Code</h4>
+        <div className="flex flex-col gap-2 mb-8">
+          <h2 className="text-label-primary text-primary pb-1">After Code</h2>
           <SyntaxHighlighter
             language="javascript"
             style={prism}

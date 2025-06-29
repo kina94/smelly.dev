@@ -1,24 +1,18 @@
-import { List, HomeIcon, LucideProps } from "lucide-react";
-import { ForwardRefExoticComponent, RefAttributes } from "react";
-
 export interface NavigationTab {
   id: string;
   label: string;
-  icon: ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>;
   href: string;
 }
 
 export const NAVIGATION_TABS: NavigationTab[] = [
   {
     id: "home",
-    label: "홈",
-    icon: HomeIcon,
+    label: "Today's Antipattern",
     href: "/",
   },
   {
     id: "antipatterns",
-    label: "안티패턴",
-    icon: List,
+    label: "All Posts",
     href: "/antipatterns",
   },
 ];

@@ -36,7 +36,7 @@ const config: Config = {
 
         // Label
         label: {
-          primary: "#000000",
+          primary: "#222222",
           secondary: "#3C3C43",
           tertiary: "#3C3C43",
           quaternary: "#3C3C43",
@@ -52,7 +52,7 @@ const config: Config = {
         },
       },
       fontSize: {
-        hero: ["32px", { lineHeight: "40px", fontWeight: "700" }], // Bold
+        hero: ["1.875rem", { lineHeight: "2.25rem", fontWeight: "700" }], // Bold
         large: ["24px", { lineHeight: "32px", fontWeight: "700" }], // Bold
         primary: ["20px", { lineHeight: "28px", fontWeight: "700" }], // Bold
         subheadSemibold: ["18px", { lineHeight: "24px", fontWeight: "600" }], // Semibold
