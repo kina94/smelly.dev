@@ -124,13 +124,13 @@ const parseAIResponse = (responseText) => {
     try {
       const jsonContent = jsonBlockMatch[1].trim();
       console.log("코드 블록에서 JSON 추출됨:", jsonContent);
-      return JSON.parse(jsonContent);
+      return { ...JSON.parse(jsonContent), updatedAt: new Date().toISOString() };
     } catch (error) {
       console.error("코드 블록 JSON 파싱 실패:", error);
     }
   }
 
-  // 2. 중괄호로 감싸진 JSON 객체 찾기
+  // 2. 코드블록 없이 중괄호로 감싸진 JSON 객체 찾기
   const jsonObjectRegex = /\{[\s\S]*\}/;
   const jsonObjectMatch = responseText.match(jsonObjectRegex);
 
@@ -138,24 +138,24 @@ const parseAIResponse = (responseText) => {
     try {
       const jsonContent = jsonObjectMatch[0];
       console.log("중괄호로 감싸진 JSON 추출됨:", jsonContent);
-      return JSON.parse(jsonContent);
+      return { ...JSON.parse(jsonContent), updatedAt: new Date().toISOString() };
     } catch (error) {
       console.error("중괄호 JSON 파싱 실패:", error);
     }
   }
 
-  // 3. 기존 로직 (전체 텍스트에서 특수문자 처리)
+  // 3. 코드블록 없이 전체 텍스트에서 특수문자 처리
   try {
     const cleanedJSON = responseText.replace(/\n/g, "\\n").replace(/\r/g, "\\r").replace(/\t/g, "\\t");
 
-    return JSON.parse(cleanedJSON);
+    return { ...JSON.parse(cleanedJSON), updatedAt: new Date().toISOString() };
   } catch (error) {
     console.error("첫 번째 파싱 시도 실패:", error);
   }
 
   // 4. 마지막 시도 (원본 텍스트 그대로)
   try {
-    return JSON.parse(responseText);
+    return { ...JSON.parse(responseText), updatedAt: new Date().toISOString() };
   } catch (secondError) {
     console.error("모든 파싱 시도 실패:", secondError);
     console.error("원본 응답:", responseText);
@@ -190,7 +190,7 @@ const validateAntipattern = (antipattern) => {
     tags: Array.isArray(antipattern?.tags) ? antipattern.tags : [],
     type: antipattern?.type || "기타",
     difficulty: antipattern?.difficulty || "중급",
-    updatedAt: new Date(),
+    updatedAt: new Date().toISOString(),
     viewCount: 0,
   };
 };
