@@ -6,6 +6,7 @@ import { Badge } from "@/shared/ui";
 import { MarkdownRenderer } from "@/widgets";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { prism } from "react-syntax-highlighter/dist/esm/styles/prism";
+import { Link as LinkIcon } from "lucide-react";
 
 export default function Article({ antipattern }: { antipattern: Antipattern }) {
   const date = formatDate(antipattern.updatedAt);
@@ -117,6 +118,34 @@ export default function Article({ antipattern }: { antipattern: Antipattern }) {
             {stripMarkdownCodeBlock(antipattern.afterCode || "")}
           </SyntaxHighlighter>
         </div>
+
+        {/* Links Section */}
+        {antipattern.links && antipattern.links.length > 0 && (
+          <div className="flex flex-col mb-8">
+            <h2 className="text-label-primary text-primary mb-4">You Might Also Like</h2>
+            <div className="space-y-0 border border-systemBackground-border rounded-lg overflow-hidden">
+              {antipattern.links.map((linkItem, index) => (
+                <a
+                  key={index}
+                  href={linkItem.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group block hover:bg-[#f8f9fa] transition-colors duration-200 border-b border-systemBackground-border last:border-b-0"
+                >
+                  <div className="flex items-center justify-between p-4">
+                    <div className="flex-1 min-w-0">
+                      <div className="text-label-secondary text-captionMedium mb-1">{linkItem.relatedTo}</div>
+                      <div className="text-systemPink group-hover:text-systemPink/80 transition-colors duration-200 text-bodyRegular truncate">
+                        {linkItem.link}
+                      </div>
+                    </div>
+                    <LinkIcon className="w-4 h-4 text-label-secondary group-hover:text-systemPink transition-colors duration-200 flex-shrink-0 ml-3" />
+                  </div>
+                </a>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

@@ -6,7 +6,7 @@ export interface Antipattern {
   summary: string;
   beforeCode: string;
   afterCode: string;
-  links: string[];
+  links: { relatedTo: string; link: string }[];
   tags: string[];
   type: "프론트엔드" | "백엔드" | "데이터베이스" | "기타";
   difficulty: "초급" | "중급" | "고급";
