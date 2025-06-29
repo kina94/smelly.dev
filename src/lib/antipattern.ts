@@ -2,7 +2,6 @@
 import { adminDb } from "@/shared/config/firebase-admin";
 import { Antipattern } from "@/shared/types";
 import { Query, DocumentData, QueryDocumentSnapshot } from "firebase-admin/firestore";
-
 /**
  * 프로덕션 환경인지 확인하는 유틸리티 함수
  */
@@ -171,32 +170,5 @@ export async function getLatestAntipattern(): Promise<Antipattern | null> {
     }
 
     throw new Error("최신 안티패턴 조회 중 오류가 발생했습니다.");
-  }
-}
-
-/**
- * 모든 안티패턴에서 사용되는 태그 목록을 가져오는 함수
- * @returns 고유한 태그 배열
- */
-export async function getAllTags(): Promise<string[]> {
-  try {
-    const antipatternsRef = adminDb.collection("antipatterns");
-    const snapshot = await antipatternsRef.get();
-
-    const allTags = new Set<string>();
-
-    snapshot.docs.forEach((doc) => {
-      const data = doc.data();
-      if (data.tags && Array.isArray(data.tags)) {
-        data.tags.forEach((tag: string) => allTags.add(tag));
-      }
-    });
-
-    const tags = Array.from(allTags).sort();
-
-    return tags;
-  } catch (error) {
-    console.error("Error fetching tags:", error);
-    return [];
   }
 }

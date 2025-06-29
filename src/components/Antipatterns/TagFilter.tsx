@@ -3,17 +3,11 @@
 import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/shared/ui/accordion";
+import { AVAILABLE_TAGS } from "@/shared/constants/tags";
 
-export default function TagFilter({
-  availableTags,
-  selectedTags,
-}: {
-  availableTags: string[];
-  selectedTags: string[];
-}) {
+export default function TagFilter({ selectedTags }: { selectedTags: string[] }) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [isAccordionOpen, setIsAccordionOpen] = useState<string | undefined>(undefined);
 
   const handleTagClick = (tag: string) => {
     const params = new URLSearchParams(searchParams?.toString() || "");
@@ -50,7 +44,7 @@ export default function TagFilter({
 
   return (
     <div>
-      <Accordion type="single" className="w-full" value={isAccordionOpen} onValueChange={setIsAccordionOpen}>
+      <Accordion type="single" className="w-full">
         <AccordionItem value="tag-filter">
           <AccordionTrigger className="!text-label-primary !text-subheadSemibold">태그 필터</AccordionTrigger>
           <AccordionContent>
@@ -68,7 +62,7 @@ export default function TagFilter({
               </div>
 
               <div className="flex flex-wrap gap-2">
-                {availableTags.map((tag) => (
+                {AVAILABLE_TAGS.map((tag) => (
                   <button
                     key={tag}
                     onClick={() => handleTagClick(tag)}
