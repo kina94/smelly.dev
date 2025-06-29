@@ -35,7 +35,7 @@ export default async function AntipatternsPage({ searchParams }: { searchParams:
         const globalIndex = pagination.totalCount - (page - 1) * limit - index;
         return <ArticlePreview key={antipattern.id} antipattern={antipattern} index={globalIndex} />;
       })}
-      <div className="pt-10">
+      <div className="pt-3">
         <AntiPatternPagination
           currentPage={pagination?.currentPage || 1}
           totalPages={pagination?.totalPages || 1}

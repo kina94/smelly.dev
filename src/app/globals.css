@@ -35,8 +35,8 @@
   }
 
   h3 {
-    @apply font-bold;
-    @apply mt-2;
+    @apply font-medium;
+    @apply mt-1;
   }
 
   /* 전역 스크롤바 스타일 */

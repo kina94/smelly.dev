@@ -9,7 +9,7 @@ interface BadgeGroupProps {
   maxVisibleOnMobile?: number;
 }
 
-export function BadgeGroup({ badges, variant = "outline", className, maxVisibleOnMobile = 1 }: BadgeGroupProps) {
+export function BadgeGroup({ badges, variant = "outline", className, maxVisibleOnMobile = 3 }: BadgeGroupProps) {
   if (!badges || badges.length === 0) {
     return null;
   }
