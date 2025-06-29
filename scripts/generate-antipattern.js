@@ -41,6 +41,13 @@ const ai = new GoogleGenAI({
   apiKey: process.env.GOOGLE_AI_KEY,
 });
 
+// 한국 시간으로 날짜 생성하는 함수
+const getKoreanTimeISOString = () => {
+  const now = new Date();
+  const koreanTime = new Date(now.getTime() + 9 * 60 * 60 * 1000); // UTC+9
+  return koreanTime.toISOString();
+};
+
 // Firebase에서 프롬프트 템플릿 조회
 const getPromptTemplate = async () => {
   try {
@@ -124,7 +131,7 @@ const parseAIResponse = (responseText) => {
     try {
       const jsonContent = jsonBlockMatch[1].trim();
       console.log("코드 블록에서 JSON 추출됨:", jsonContent);
-      return { ...JSON.parse(jsonContent), updatedAt: new Date().toISOString() };
+      return { ...JSON.parse(jsonContent), updatedAt: getKoreanTimeISOString() };
     } catch (error) {
       console.error("코드 블록 JSON 파싱 실패:", error);
     }
@@ -138,7 +145,7 @@ const parseAIResponse = (responseText) => {
     try {
       const jsonContent = jsonObjectMatch[0];
       console.log("중괄호로 감싸진 JSON 추출됨:", jsonContent);
-      return { ...JSON.parse(jsonContent), updatedAt: new Date().toISOString() };
+      return { ...JSON.parse(jsonContent), updatedAt: getKoreanTimeISOString() };
     } catch (error) {
       console.error("중괄호 JSON 파싱 실패:", error);
     }
@@ -148,14 +155,14 @@ const parseAIResponse = (responseText) => {
   try {
     const cleanedJSON = responseText.replace(/\n/g, "\\n").replace(/\r/g, "\\r").replace(/\t/g, "\\t");
 
-    return { ...JSON.parse(cleanedJSON), updatedAt: new Date().toISOString() };
+    return { ...JSON.parse(cleanedJSON), updatedAt: getKoreanTimeISOString() };
   } catch (error) {
     console.error("첫 번째 파싱 시도 실패:", error);
   }
 
   // 4. 마지막 시도 (원본 텍스트 그대로)
   try {
-    return { ...JSON.parse(responseText), updatedAt: new Date().toISOString() };
+    return { ...JSON.parse(responseText), updatedAt: getKoreanTimeISOString() };
   } catch (secondError) {
     console.error("모든 파싱 시도 실패:", secondError);
     console.error("원본 응답:", responseText);
@@ -179,7 +186,7 @@ const checkTitleDuplicate = async (title) => {
 // 안티패턴 데이터 검증 및 기본값 설정
 const validateAntipattern = (antipattern) => {
   return {
-    id: antipattern?.id || new Date().toISOString(),
+    id: antipattern?.id || getKoreanTimeISOString(),
     title: antipattern?.title || "제목 없음",
     whyWrong: antipattern?.whyWrong || "설명 없음",
     howToFix: antipattern?.howToFix || "해결 방법 없음",
@@ -190,7 +197,7 @@ const validateAntipattern = (antipattern) => {
     tags: Array.isArray(antipattern?.tags) ? antipattern.tags : [],
     type: antipattern?.type || "기타",
     difficulty: antipattern?.difficulty || "중급",
-    updatedAt: new Date().toISOString(),
+    updatedAt: getKoreanTimeISOString(),
     viewCount: 0,
   };
 };

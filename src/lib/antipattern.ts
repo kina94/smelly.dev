@@ -2,6 +2,16 @@
 import { adminDb } from "@/shared/config/firebase-admin";
 import { Antipattern } from "@/shared/types";
 import { Query, DocumentData, QueryDocumentSnapshot } from "firebase-admin/firestore";
+
+/**
+ * 한국 시간으로 ISO 문자열 생성하는 함수
+ */
+const getKoreanTimeISOString = (): string => {
+  const now = new Date();
+  const koreanTime = new Date(now.getTime() + 9 * 60 * 60 * 1000); // UTC+9
+  return koreanTime.toISOString();
+};
+
 /**
  * 프로덕션 환경인지 확인하는 유틸리티 함수
  */
@@ -29,7 +39,7 @@ export async function getAntipattern(id: string): Promise<Antipattern> {
       antipatternRef
         .update({
           viewCount: (data?.viewCount || 0) + 1,
-          lastViewed: new Date().toISOString(),
+          lastViewed: getKoreanTimeISOString(),
         })
         .catch(console.error);
     }
@@ -151,7 +161,7 @@ export async function getLatestAntipattern(): Promise<Antipattern | null> {
       antipatternRef
         .update({
           viewCount: (data?.viewCount || 0) + 1,
-          lastViewed: new Date().toISOString(),
+          lastViewed: getKoreanTimeISOString(),
         })
         .catch(console.error);
     }

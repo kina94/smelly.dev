@@ -66,5 +66,5 @@ export function getDifficultyVariant(difficulty: string): "yellow" | "green" | "
 
 export function formatDate(date: string): string {
   if (!date) return "";
-  return dayjs.utc(new Date(date)).tz("Asia/Seoul").format("LL");
+  return dayjs(date).tz("Asia/Seoul").format("LL");
 }
