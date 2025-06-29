@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
+import { useState } from "react";
 
 interface TagFilterProps {
   availableTags: string[];
@@ -11,8 +12,11 @@ interface TagFilterProps {
 export default function TagFilter({ availableTags, selectedTags, totalCount }: TagFilterProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleTagClick = (tag: string) => {
+  const handleTagClick = async (tag: string) => {
+    setIsLoading(true);
+
     const params = new URLSearchParams(searchParams);
     const currentTags = params.get("tags")?.split(",").filter(Boolean) || [];
 
@@ -37,7 +41,9 @@ export default function TagFilter({ availableTags, selectedTags, totalCount }: T
     router.push(`/antipatterns?${params.toString()}`);
   };
 
-  const clearAllTags = () => {
+  const clearAllTags = async () => {
+    setIsLoading(true);
+
     const params = new URLSearchParams(searchParams);
     params.delete("tags");
     params.set("page", "1");
@@ -57,8 +63,12 @@ export default function TagFilter({ availableTags, selectedTags, totalCount }: T
           )}
         </div>
         {selectedTags.length > 0 && (
-          <button onClick={clearAllTags} className="text-sm text-blue-600 hover:text-blue-800 underline">
-            모든 태그 해제
+          <button
+            onClick={clearAllTags}
+            disabled={isLoading}
+            className="text-sm text-blue-600 hover:text-blue-800 underline disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {isLoading ? "처리 중..." : "모든 태그 해제"}
           </button>
         )}
       </div>
@@ -68,7 +78,8 @@ export default function TagFilter({ availableTags, selectedTags, totalCount }: T
           <button
             key={tag}
             onClick={() => handleTagClick(tag)}
-            className={`px-3 py-1 rounded-full text-sm font-medium transition-colors ${
+            disabled={isLoading}
+            className={`px-3 py-1 rounded-full text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${
               selectedTags.includes(tag) ? "bg-blue-600 text-white" : "bg-gray-100 text-gray-700 hover:bg-gray-200"
             }`}
           >

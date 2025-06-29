@@ -4,6 +4,11 @@ import { Antipattern } from "@/shared/types";
 import { serializeFirebaseData } from "@/utils/firebase";
 import { Query, DocumentData, QueryDocumentSnapshot } from "firebase-admin/firestore";
 
+// 태그 캐싱을 위한 변수
+let cachedTags: string[] | null = null;
+let tagsCacheTime: number = 0;
+const CACHE_DURATION = 5 * 60 * 1000; // 5분
+
 /**
  * 단일 안티패턴을 가져오는 함수 (성능 최적화)
  * @param id - 안티패턴 ID
@@ -166,6 +171,13 @@ export async function getLatestAntipattern(): Promise<Antipattern | null> {
  * @returns 고유한 태그 배열
  */
 export async function getAllTags(): Promise<string[]> {
+  const now = Date.now();
+
+  // 캐시가 유효한 경우 캐시된 태그 반환
+  if (cachedTags && now - tagsCacheTime < CACHE_DURATION) {
+    return cachedTags;
+  }
+
   try {
     const antipatternsRef = adminDb.collection("antipatterns");
     const snapshot = await antipatternsRef.get();
@@ -179,7 +191,13 @@ export async function getAllTags(): Promise<string[]> {
       }
     });
 
-    return Array.from(allTags).sort();
+    const tags = Array.from(allTags).sort();
+
+    // 캐시 업데이트
+    cachedTags = tags;
+    tagsCacheTime = now;
+
+    return tags;
   } catch (error) {
     console.error("Error fetching tags:", error);
     return [];
