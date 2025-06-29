@@ -3,22 +3,20 @@ import { ArticlePreview } from "@/components/ArticlePreview";
 import { getAntipatterns } from "@/lib/antipattern";
 import { Antipattern } from "@/shared/types";
 
-export default async function List({ page, tags }: { page: number; tags: string[] }) {
+export default async function List({ cursor, tags }: { cursor?: string; tags: string[] }) {
   const limit = 10;
-  const { antipatterns, pagination } = await getAntipatterns(page, limit, tags);
+  const { antipatterns, pagination } = await getAntipatterns(limit, cursor, tags);
 
   return (
     <>
       {antipatterns?.map((antipattern: Antipattern, index: number) => {
-        const globalIndex = pagination.totalCount - (page - 1) * limit - index;
-        return <ArticlePreview key={antipattern.id} antipattern={antipattern} index={globalIndex} />;
+        return <ArticlePreview key={antipattern.id} antipattern={antipattern} index={index + 1} />;
       })}
       <div className="pt-3">
         <AntiPatternPagination
-          currentPage={pagination.currentPage}
-          totalPages={pagination.totalPages}
           hasNextPage={pagination.hasNextPage}
-          hasPrevPage={pagination.hasPrevPage}
+          nextCursor={pagination.nextCursor}
+          currentCursor={cursor}
         />
       </div>
     </>

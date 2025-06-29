@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
+import { useState, useEffect } from "react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/shared/ui/accordion";
 
 export default function TagFilter({
@@ -12,6 +13,7 @@ export default function TagFilter({
 }) {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const [isAccordionOpen, setIsAccordionOpen] = useState<string | undefined>("tag-filter");
 
   const handleTagClick = (tag: string) => {
     const params = new URLSearchParams(searchParams?.toString() || "");
@@ -30,8 +32,8 @@ export default function TagFilter({
       params.set("tags", newTags.join(","));
     }
 
-    // 페이지를 1로 리셋
-    params.set("page", "1");
+    // 커서를 제거하여 첫 페이지로 리셋
+    params.delete("cursor");
 
     const url = `/antipatterns?${params.toString()}`;
     router.push(url);
@@ -40,48 +42,56 @@ export default function TagFilter({
   const handleClearFilter = () => {
     const params = new URLSearchParams(searchParams?.toString() || "");
     params.delete("tags");
-    params.set("page", "1");
+    params.delete("cursor");
 
     const url = `/antipatterns?${params.toString()}`;
     router.push(url);
   };
 
   return (
-    <Accordion type="single" collapsible className="w-full">
-      <AccordionItem value="tag-filter">
-        <AccordionTrigger className="!text-label-primary !text-subheadSemibold">태그 필터</AccordionTrigger>
-        <AccordionContent>
-          <div>
-            <div className="flex mb-4 justify-between items-center">
-              <span className="text-captionRegular text-label-tertiary">{selectedTags.length}개 선택됨</span>
-              {selectedTags.length > 0 && (
-                <button
-                  onClick={handleClearFilter}
-                  className="text-captionRegular text-systemPink hover:text-systemPink/80 transition-colors"
-                >
-                  모두 해제
-                </button>
-              )}
-            </div>
+    <div>
+      <Accordion
+        type="single"
+        collapsible
+        className="w-full"
+        value={isAccordionOpen}
+        onValueChange={setIsAccordionOpen}
+      >
+        <AccordionItem value="tag-filter">
+          <AccordionTrigger className="!text-label-primary !text-subheadSemibold">태그 필터</AccordionTrigger>
+          <AccordionContent>
+            <div>
+              <div className="flex mb-4 justify-between items-center">
+                <span className="text-captionRegular text-label-tertiary">{selectedTags.length}개 선택됨</span>
+                {selectedTags.length > 0 && (
+                  <button
+                    onClick={handleClearFilter}
+                    className="text-captionRegular text-systemPink hover:text-systemPink/80 transition-colors"
+                  >
+                    모두 해제
+                  </button>
+                )}
+              </div>
 
-            <div className="flex flex-wrap gap-2">
-              {availableTags.map((tag) => (
-                <button
-                  key={tag}
-                  onClick={() => handleTagClick(tag)}
-                  className={`px-3 py-1 rounded-full text-sm font-medium transition-colors ${
-                    selectedTags.includes(tag)
-                      ? "bg-systemPink text-white"
-                      : "bg-white text-captionSmall text-zinc-600 hover:bg-gray-100 outline outline-1 outline-systemGray-4"
-                  }`}
-                >
-                  {tag}
-                </button>
-              ))}
+              <div className="flex flex-wrap gap-2">
+                {availableTags.map((tag) => (
+                  <button
+                    key={tag}
+                    onClick={() => handleTagClick(tag)}
+                    className={`px-3 py-1 rounded-full text-sm font-medium transition-colors ${
+                      selectedTags.includes(tag)
+                        ? "bg-systemPink text-white"
+                        : "bg-white text-captionSmall text-zinc-600 hover:bg-gray-100 outline outline-1 outline-systemGray-4"
+                    }`}
+                  >
+                    {tag}
+                  </button>
+                ))}
+              </div>
             </div>
-          </div>
-        </AccordionContent>
-      </AccordionItem>
-    </Accordion>
+          </AccordionContent>
+        </AccordionItem>
+      </Accordion>
+    </div>
   );
 }

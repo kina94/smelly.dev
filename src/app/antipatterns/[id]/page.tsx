@@ -2,6 +2,7 @@ import Article from "@/components/Article/Article";
 import { getAntipattern } from "@/lib/antipattern";
 import React from "react";
 import type { Metadata } from "next";
+import { BackButton } from "@/widgets";
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -44,7 +45,12 @@ const AntiPatternDetail = async ({ params }: { params: Promise<{ id: string }> }
 
   const antipattern = await getAntipattern(id);
 
-  return <Article antipattern={antipattern} />;
+  return (
+    <>
+      <BackButton />
+      <Article antipattern={antipattern} />
+    </>
+  );
 };
 
 export default AntiPatternDetail;

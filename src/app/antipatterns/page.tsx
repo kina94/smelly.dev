@@ -5,7 +5,7 @@ import { AntipatternList, TagFilter } from "@/components/Antipatterns";
 import { getAllTags } from "@/lib/antipattern";
 
 interface SearchParams {
-  page?: string;
+  cursor?: string;
   tags?: string;
 }
 
@@ -46,7 +46,7 @@ export async function generateMetadata({ searchParams }: { searchParams: SearchP
 }
 
 export default async function AntipatternsPage({ searchParams }: { searchParams: SearchParams }) {
-  const page = parseInt(searchParams.page || "1");
+  const cursor = searchParams.cursor;
   const tags = searchParams.tags ? searchParams.tags.split(",").filter(Boolean) : [];
 
   // 사용 가능한 모든 태그 가져오기
@@ -55,8 +55,8 @@ export default async function AntipatternsPage({ searchParams }: { searchParams:
   return (
     <div>
       <TagFilter availableTags={availableTags} selectedTags={tags} />
-      <Suspense key={`${page}-${tags.join(",")}`} fallback={<ArticlePreviewSkeleton />}>
-        <AntipatternList page={page} tags={tags} />
+      <Suspense key={`${cursor || "first"}-${tags.join(",")}`} fallback={<ArticlePreviewSkeleton />}>
+        <AntipatternList cursor={cursor} tags={tags} />
       </Suspense>
     </div>
   );
