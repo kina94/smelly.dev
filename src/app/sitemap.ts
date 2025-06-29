@@ -22,12 +22,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   try {
     // 모든 안티패턴 가져오기 (페이지네이션 없이)
-    const { antipatterns } = await getAntipatterns(1, 1000); // 충분히 큰 수로 설정
+    const result = await getAntipatterns(1000); // 충분히 큰 수로 설정
 
     const antipatternPages =
-      antipatterns?.map((antipattern) => ({
+      result.antipatterns?.map((antipattern) => ({
         url: `${baseUrl}/antipatterns/${antipattern.id}`,
-        lastModified: antipattern.updatedAt || new Date(),
+        lastModified: new Date(antipattern.updatedAt),
         changeFrequency: "weekly" as const,
         priority: 0.8,
       })) || [];

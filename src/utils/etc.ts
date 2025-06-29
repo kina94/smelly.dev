@@ -9,12 +9,6 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 dayjs.extend(LocalizedFormat);
 
-// Firebase Timestamp 타입 정의
-interface FirebaseTimestamp {
-  _seconds: number;
-  _nanoseconds: number;
-}
-
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
@@ -27,25 +21,6 @@ export function cn(...inputs: ClassValue[]) {
 export function unescapeNewlines(text: string | null | undefined): string {
   if (!text) return "";
   return text.replace(/\\n/g, "\n");
-}
-
-/**
- * Firebase Timestamp 또는 Date 객체를 Date 객체로 변환합니다.
- * @param timestamp - Firebase Timestamp 객체 또는 Date 객체
- * @returns Date 객체
- */
-export function toDate(timestamp: FirebaseTimestamp | Date | null | undefined): Date {
-  if (!timestamp) {
-    return new Date();
-  }
-
-  // Firebase Timestamp인지 확인
-  if (typeof timestamp === "object" && "_seconds" in timestamp) {
-    return new Date(timestamp._seconds * 1000);
-  }
-
-  // Date 객체인 경우 그대로 반환
-  return timestamp as Date;
 }
 
 /**
@@ -89,7 +64,7 @@ export function getDifficultyVariant(difficulty: string): "yellow" | "green" | "
   }
 }
 
-export function formatDate(date: FirebaseTimestamp | Date | null | undefined): string {
+export function formatDate(date: string): string {
   if (!date) return "";
-  return dayjs.utc(toDate(date)).tz("Asia/Seoul").format("LL");
+  return dayjs.utc(new Date(date)).tz("Asia/Seoul").format("LL");
 }

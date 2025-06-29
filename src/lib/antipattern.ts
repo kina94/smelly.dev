@@ -98,7 +98,7 @@ export async function getAntipatterns(limit: number = 10, cursor?: string, tags:
         ...data,
         id: doc.id,
       };
-    });
+    }) as Antipattern[];
 
     // 다음 페이지 커서 생성 (마지막 문서의 ID)
     const nextCursor = hasNextPage ? antipatterns[antipatterns.length - 1]?.id : null;

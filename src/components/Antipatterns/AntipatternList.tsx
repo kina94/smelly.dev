@@ -15,7 +15,7 @@ export default async function List({ cursor, tags }: { cursor?: string; tags: st
       <div className="pt-3">
         <AntiPatternPagination
           hasNextPage={pagination.hasNextPage}
-          nextCursor={pagination.nextCursor}
+          nextCursor={pagination.nextCursor || null}
           currentCursor={cursor}
         />
       </div>

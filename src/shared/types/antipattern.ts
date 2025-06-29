@@ -10,6 +10,7 @@ export interface Antipattern {
   tags: string[];
   type: string[];
   difficulty: "초급" | "중급" | "고급";
-  updatedAt?: Date;
-  viewCount?: number;
+  updatedAt: string;
+  viewCount: number;
+  lastViewed: string;
 }

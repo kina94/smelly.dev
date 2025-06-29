@@ -1,5 +1,5 @@
 import { Antipattern } from "@/shared/types";
-import { unescapeNewlines, stripMarkdownCodeBlock, formatDate, toDate } from "@/utils/etc";
+import { unescapeNewlines, stripMarkdownCodeBlock, formatDate } from "@/utils/etc";
 
 import React from "react";
 import { Badge } from "@/shared/ui";
@@ -38,8 +38,8 @@ export default function Article({ antipattern }: { antipattern: Antipattern }) {
     inLanguage: "ko-KR",
     isAccessibleForFree: true,
     programmingLanguage: "JavaScript",
-    datePublished: toDate(antipattern.updatedAt),
-    dateModified: toDate(antipattern.updatedAt),
+    datePublished: new Date(antipattern.updatedAt),
+    dateModified: new Date(antipattern.updatedAt),
   };
 
   return (
