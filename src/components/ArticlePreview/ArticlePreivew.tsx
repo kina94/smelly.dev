@@ -1,5 +1,3 @@
-"use client";
-
 import { Antipattern } from "@/shared/types";
 import { formatDate } from "@/utils/etc";
 import React from "react";

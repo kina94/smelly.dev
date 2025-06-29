@@ -13,7 +13,7 @@ export default function TagFilter({
 }) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [isAccordionOpen, setIsAccordionOpen] = useState<string | undefined>("tag-filter");
+  const [isAccordionOpen, setIsAccordionOpen] = useState<string | undefined>(undefined);
 
   const handleTagClick = (tag: string) => {
     const params = new URLSearchParams(searchParams?.toString() || "");
@@ -50,13 +50,7 @@ export default function TagFilter({
 
   return (
     <div>
-      <Accordion
-        type="single"
-        collapsible
-        className="w-full"
-        value={isAccordionOpen}
-        onValueChange={setIsAccordionOpen}
-      >
+      <Accordion type="single" className="w-full" value={isAccordionOpen} onValueChange={setIsAccordionOpen}>
         <AccordionItem value="tag-filter">
           <AccordionTrigger className="!text-label-primary !text-subheadSemibold">태그 필터</AccordionTrigger>
           <AccordionContent>
