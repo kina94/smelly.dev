@@ -4,17 +4,11 @@ export default function ArticlePreviewSkeleton() {
   return (
     <div>
       {Array.from({ length: 10 }).map((_, index) => (
-        <div key={index} className="border-b border-systemBackground-border first:pt-0 py-6 md:py-10">
+        <div key={index} className="first:pt-0 py-6 md:py-10">
           {/* Date and badges row */}
           <div className="flex justify-between items-center">
             {/* Date skeleton */}
             <div className="h-4 w-20 bg-gray-200 rounded animate-pulse"></div>
-            <div className="flex gap-2">
-              {/* Type badge skeleton */}
-              <div className="h-5 w-12 bg-gray-200 rounded-full animate-pulse"></div>
-              {/* Difficulty badge skeleton */}
-              <div className="h-5 w-16 bg-gray-200 rounded-full animate-pulse"></div>
-            </div>
           </div>
 
           {/* Title and summary */}
@@ -39,12 +33,6 @@ export default function ArticlePreviewSkeleton() {
               <div className="h-5 w-16 bg-gray-200 rounded-full animate-pulse"></div>
               <div className="h-5 w-20 bg-gray-200 rounded-full animate-pulse"></div>
               <div className="h-5 w-14 bg-gray-200 rounded-full animate-pulse"></div>
-            </div>
-
-            {/* Right side badges (type and difficulty) */}
-            <div className="flex gap-2">
-              <div className="h-5 w-12 bg-gray-200 rounded-full animate-pulse"></div>
-              <div className="h-5 w-16 bg-gray-200 rounded-full animate-pulse"></div>
             </div>
           </div>
         </div>

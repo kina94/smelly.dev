@@ -49,18 +49,20 @@ export default function Article({ antipattern }: { antipattern: Antipattern }) {
       <div className="flex flex-col mb-8 pb-3 border-b border-systemBackground-border gap-3">
         <span className="text-label-secondary text-captionSmall text-sm">{date}</span>
 
-        <h1 className="text-label-primary text-hero text-3xl break-words">{antipattern.title || "제목 없음"}</h1>
+        <h1 className="text-label-primary text-hero break-words">{antipattern.title || "제목 없음"}</h1>
 
         {/* Tags */}
-        {antipattern.tags && antipattern.tags.length > 0 && (
-          <div className="flex flex-wrap gap-2 mb-3">
-            {antipattern.tags.map((tag, index) => (
-              <Badge key={index} variant="outline" className="text-xs">
-                {tag}
-              </Badge>
-            ))}
-          </div>
-        )}
+        <div className="flex flex-wrap gap-2 mb-3">
+          {antipattern.tags && antipattern.tags.length > 0 && (
+            <>
+              {antipattern.tags.map((tag, index) => (
+                <Badge key={index} variant="outline" className="text-xs">
+                  {tag}
+                </Badge>
+              ))}
+            </>
+          )}
+        </div>
       </div>
 
       <div className="space-y-8">
