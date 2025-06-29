@@ -74,6 +74,14 @@ export default function PostCardSkeleton() {
           <div className="h-5 w-22 bg-gray-200 rounded animate-pulse"></div>
           <div className="bg-gray-100 rounded-lg p-4 h-32 animate-pulse"></div>
         </div>
+
+        {/* You Might Also Like */}
+        <div className="flex flex-col gap-2">
+          <div className="h-5 w-22 bg-gray-200 rounded animate-pulse"></div>
+          <div className="bg-gray-100 rounded-lg p-4 h-32 animate-pulse"></div>
+          <div className="bg-gray-100 rounded-lg p-4 h-32 animate-pulse"></div>
+          <div className="bg-gray-100 rounded-lg p-4 h-32 animate-pulse"></div>
+        </div>
       </div>
     </div>
   );

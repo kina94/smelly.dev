@@ -10,7 +10,8 @@ export default async function List({ cursor, tags }: { cursor?: string; tags: st
   return (
     <>
       {result.antipatterns?.map((antipattern: Antipattern, index: number) => {
-        return <ArticlePreview key={antipattern.id} antipattern={antipattern} index={index + 1} />;
+        const descendingIndex = result.antipatterns.length - index;
+        return <ArticlePreview key={antipattern.id} antipattern={antipattern} index={descendingIndex} />;
       })}
       <div className="pt-3">
         <AntiPatternPagination
