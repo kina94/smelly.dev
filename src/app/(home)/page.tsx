@@ -2,6 +2,7 @@ import { Article } from "@/components/Article";
 import { ErrorMessage } from "@/widgets";
 import { getLatestAntipattern } from "@/lib/antipattern";
 import type { Metadata } from "next";
+import { AVAILABLE_TAGS } from "@/shared/constants/tags";
 
 export const metadata: Metadata = {
   title: "프론트엔드 안티패턴 모음과 가이드 | Smelly.dev",
@@ -17,31 +18,7 @@ export const metadata: Metadata = {
     "웹 안티패턴",
     "웹 개발 실수",
     "웹개발",
-    // AVAILABLE_TAGS
-    "JavaScript",
-    "TypeScript",
-    "React",
-    "CSS",
-    "HTML",
-    "UX",
-    "성능",
-    "보안",
-    "상태관리",
-    "테스트",
-    "빌드&번들링",
-    "애니메이션/UI",
-    "컴포넌트",
-    "네이밍",
-    "Lint/Formatter",
-    "비동기처리",
-    "아키텍처",
-    "호환성",
-    "CI/CD",
-    "에러처리",
-    "캐싱전략",
-    "렌더링전략",
-    "웹표준",
-    "SEO/접근성",
+    ...AVAILABLE_TAGS,
   ],
   openGraph: {
     title: "프론트엔드 안티패턴 가이드",
@@ -61,5 +38,28 @@ export default async function Home() {
     return <ErrorMessage message="표시할 안티패턴이 없습니다." />;
   }
 
-  return <Article antipattern={latestAntipattern} />;
+  // 홈페이지용 JSON-LD 구조화 데이터
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: "Smelly.dev",
+    description: "프론트엔드 안티패턴을 매일 하나씩 소개하는 사이트",
+    url: "https://smelly-dev.vercel.app",
+    potentialAction: {
+      "@type": "SearchAction",
+      target: "https://smelly-dev.vercel.app/antipatterns?tags={search_term_string}",
+      "query-input": "required name=search_term_string",
+    },
+    publisher: {
+      "@type": "Organization",
+      name: "Smelly.dev",
+    },
+  };
+
+  return (
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <Article antipattern={latestAntipattern} />
+    </>
+  );
 }

@@ -22,7 +22,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: antipattern.title,
     description: `${antipattern.title} - ${antipattern.summary}`,
-    keywords: ["안티패턴", "프론트엔드", antipattern.title, ...antipattern.tags],
+    keywords: ["안티패턴", "프론트엔드", "웹개발", "코드 품질", "개발 팁", antipattern.title, ...antipattern.tags],
     openGraph: {
       title: antipattern.title,
       description: `${antipattern.title} - ${antipattern.summary}`,
@@ -35,7 +35,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description: `${antipattern.title} - ${antipattern.summary}`,
     },
     alternates: {
-      canonical: `/antipatterns/${id}`,
+      canonical: `https://smelly-dev.vercel.app/antipatterns/${id}`,
     },
   };
 }

@@ -41,10 +41,37 @@ export default function Article({ antipattern }: { antipattern: Antipattern }) {
     dateModified: new Date(antipattern.updatedAt),
   };
 
+  // Breadcrumb 구조화 데이터
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "홈",
+        item: "https://smelly-dev.vercel.app",
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "안티패턴 목록",
+        item: "https://smelly-dev.vercel.app/antipatterns",
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: antipattern.title,
+        item: `https://smelly-dev.vercel.app/antipatterns/${antipattern.id}`,
+      },
+    ],
+  };
+
   return (
     <div>
       {/* JSON-LD 구조화 데이터 */}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
 
       <div className="flex flex-col mb-8 pb-3 border-b border-gray-200 gap-3">
         <span className="text-muted-foreground dark:text-[#EEEEEE] text-captionSmall">{date}</span>

@@ -30,6 +30,10 @@ export const metadata: Metadata = {
     description: "프론트엔드 안티패턴을 매일 하나씩 소개합니다.",
     siteName: "Smelly.dev",
   },
+  twitter: {
+    title: "Smelly.dev - 프론트엔드 안티패턴 가이드",
+    description: "프론트엔드 안티패턴을 매일 하나씩 소개합니다.",
+  },
   robots: {
     index: true,
     follow: true,
