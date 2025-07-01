@@ -46,24 +46,6 @@ export function stripMarkdownCodeBlock(code: string | null | undefined): string 
   return code;
 }
 
-/**
- * 난이도별 뱃지 색상 매핑 함수
- * @param difficulty - 난이도 문자열
- * @returns 뱃지 variant 문자열
- */
-export function getDifficultyVariant(difficulty: string): "yellow" | "green" | "pink" {
-  switch (difficulty) {
-    case "초급":
-      return "yellow";
-    case "중급":
-      return "green";
-    case "고급":
-      return "pink";
-    default:
-      return "yellow";
-  }
-}
-
 export function formatDate(date: string): string {
   if (!date) return "";
   return dayjs(date).tz("Asia/Seoul").format("LL");
