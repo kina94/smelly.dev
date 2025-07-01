@@ -14,7 +14,7 @@ export default function Footer() {
             <div className="w-32">
               <Logo />
             </div>
-            <p className="text-sm text-gray-500 dark:text-gray-300 leading-relaxed break-words">
+            <p className="text-sm text-gray-500 dark:text-[#EEEEEE] leading-relaxed break-words">
               안티패턴을 통해 더 나은 코드를 작성하는 방법을 배워보세요. 개발자들이 실수하는 패턴들을 분석하고
               개선방안을 제시합니다.
             </p>
@@ -22,7 +22,7 @@ export default function Footer() {
 
           {/* Social Links */}
           <div className="space-y-4">
-            <h3 className="text-sm font-semibold text-gray-600 dark:text-gray-200">연결하기</h3>
+            <h3 className="text-sm font-semibold text-gray-600 dark:text-[#EEEEEE]">연결하기</h3>
             <div className="flex space-x-3">
               <a
                 href="https://github.com/kina94/smelly.dev"
@@ -31,14 +31,14 @@ export default function Footer() {
                 className="flex items-center justify-center w-8 h-8 rounded-full bg-white dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
                 title="GitHub"
               >
-                <Github size={16} className="text-gray-600 dark:text-gray-300" />
+                <Github size={16} className="text-gray-600 dark:text-[#EEEEEE]" />
               </a>
               <a
                 href="mailto:chase245@naver.com"
                 className="flex items-center justify-center w-8 h-8 rounded-full bg-white dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
                 title="이메일"
               >
-                <Mail size={16} className="text-gray-600 dark:text-gray-300" />
+                <Mail size={16} className="text-gray-600 dark:text-[#EEEEEE]" />
               </a>
             </div>
           </div>

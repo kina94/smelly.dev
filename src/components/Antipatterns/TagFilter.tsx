@@ -44,7 +44,7 @@ export default function TagFilter({ selectedTags }: { selectedTags: string[] }) 
   return (
     <Accordion type="single" className="w-full" collapsible>
       <AccordionItem value="tag-filter">
-        <AccordionTrigger className="!text-label-primary !text-subheadSemibold">
+        <AccordionTrigger className="!text-foreground dark:!text-[#EEEEEE] !text-subheadSemibold">
           <div className="flex items-center">
             태그 필터
             {selectedTags.length > 0 && (
@@ -75,7 +75,7 @@ export default function TagFilter({ selectedTags }: { selectedTags: string[] }) 
                   className={`px-3 py-1 rounded-full text-sm font-medium transition-colors ${
                     selectedTags.includes(tag)
                       ? "bg-systemPink text-white"
-                      : "bg-white text-captionSmall text-zinc-600 hover:bg-gray-100 outline outline-1 outline-gray-300"
+                      : "bg-background text-captionSmall text-muted-foreground hover:bg-accent outline outline-1 outline-border"
                   }`}
                 >
                   {tag}

@@ -1,12 +1,11 @@
 import { Antipattern } from "@/shared/types";
-import { unescapeNewlines, stripMarkdownCodeBlock, formatDate } from "@/utils/etc";
+import { unescapeNewlines, formatDate } from "@/utils/etc";
 
 import React from "react";
 import { Badge } from "@/shared/ui";
 import { MarkdownRenderer } from "@/widgets";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { prism } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { Code2, Link as LinkIcon } from "lucide-react";
+import CodeBox from "./CodeBox";
 
 export default function Article({ antipattern }: { antipattern: Antipattern }) {
   const date = formatDate(antipattern.updatedAt);
@@ -48,9 +47,11 @@ export default function Article({ antipattern }: { antipattern: Antipattern }) {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
       <div className="flex flex-col mb-8 pb-3 border-b border-gray-200 gap-3">
-        <span className="text-label-secondary text-captionSmall">{date}</span>
+        <span className="text-muted-foreground dark:text-[#EEEEEE] text-captionSmall">{date}</span>
 
-        <h1 className="text-label-primary text-hero break-words">{antipattern.title || "제목 없음"}</h1>
+        <h1 className="text-foreground dark:text-[#EEEEEE] text-hero break-words">
+          {antipattern.title || "제목 없음"}
+        </h1>
 
         {/* Tags */}
         <div className="flex flex-wrap gap-2 mb-3">
@@ -68,26 +69,26 @@ export default function Article({ antipattern }: { antipattern: Antipattern }) {
 
       <div className="space-y-8">
         {summary && (
-          <div className="flex flex-col space-y-2 px-6 py-4 bg-background-accent border border-systemBlue rounded-lg">
+          <div className="flex flex-col space-y-2 px-6 py-4 bg-background-accent dark:bg-gray-800/50 border border-systemBlue dark:border-gray-600 rounded-lg">
             <div className="flex items-center gap-2">
-              <h2 className="text-systemBlue text-subheadSemibold">Summary</h2>
+              <h2 className="text-systemBlue dark:text-gray-200 text-subheadSemibold">Summary</h2>
             </div>
-            <div className="text-systemBlue text-bodyRegular">
+            <div className="text-systemBlue dark:text-gray-200 text-bodyRegular">
               <MarkdownRenderer content={summary} />
             </div>
           </div>
         )}
 
         <div className="flex flex-col mb-8">
-          <h2 className="text-label-primary text-primary mb-4">Why Wrong?</h2>
-          <div className="text-label-primary text-bodyRegular">
+          <h2 className="text-foreground dark:text-[#EEEEEE] text-primary mb-4">Why Wrong?</h2>
+          <div className="text-foreground dark:text-[#EEEEEE] text-bodyRegular">
             <MarkdownRenderer content={whyWrong} />
           </div>
         </div>
 
         <div className="flex flex-col mb-8">
-          <h2 className="text-label-primary text-primary mb-4">How to Fix?</h2>
-          <div className="text-label-primary text-bodyRegular">
+          <h2 className="text-foreground dark:text-[#EEEEEE] text-primary mb-4">How to Fix?</h2>
+          <div className="text-foreground dark:text-[#EEEEEE] text-bodyRegular">
             <MarkdownRenderer content={fix} />
           </div>
         </div>
@@ -95,58 +96,40 @@ export default function Article({ antipattern }: { antipattern: Antipattern }) {
         <div className="flex flex-col mb-8">
           <div className="flex items-center gap-2 mb-4">
             <Code2 className="text-systemRed" />
-            <h2 className="text-label-primary text-primary pb-1">Before Code (Bad)</h2>
+            <h2 className="text-foreground dark:text-[#EEEEEE] text-primary pb-1">Before Code (Bad)</h2>
           </div>
-          <SyntaxHighlighter
-            language="javascript"
-            style={prism}
-            customStyle={{
-              borderRadius: 14,
-              fontSize: 12,
-              padding: 12,
-              margin: 0,
-            }}
-          >
-            {stripMarkdownCodeBlock(antipattern.beforeCode || "")}
-          </SyntaxHighlighter>
+          <CodeBox code={antipattern.beforeCode} />
         </div>
 
         <div className="flex flex-col mb-8">
           <div className="flex items-center gap-2 mb-4">
             <Code2 className="text-systemGreen" />
-            <h2 className="text-label-primary text-primary pb-1">After Code (Good)</h2>
+            <h2 className="text-foreground dark:text-[#EEEEEE] text-primary pb-1">After Code (Good)</h2>
           </div>
-          <SyntaxHighlighter
-            language="javascript"
-            style={prism}
-            customStyle={{ borderRadius: 14, fontSize: 12, padding: 12, margin: 0 }}
-            wrapLongLines={true}
-          >
-            {stripMarkdownCodeBlock(antipattern.afterCode || "")}
-          </SyntaxHighlighter>
+          <CodeBox code={antipattern.afterCode} />
         </div>
 
         {/* Links Section */}
         {antipattern.links && antipattern.links.length > 0 && (
           <div className="flex flex-col mb-8">
-            <h2 className="text-label-primary text-primary mb-4">You Might Also Like</h2>
-            <div className="space-y-0 border border-gray-200 rounded-lg overflow-hidden">
+            <h2 className="text-foreground dark:text-[#EEEEEE] text-primary mb-4">You Might Also Like</h2>
+            <div className="space-y-0 border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
               {antipattern.links.map((linkItem, index) => (
                 <a
                   key={index}
                   href={linkItem.link}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group block hover:bg-background-hover transition-colors duration-200 border-b border-systemBackground-border last:border-b-0"
+                  className="group block hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-200 border-b border-gray-200 dark:border-gray-700 last:border-b-0"
                 >
                   <div className="flex items-center justify-between p-4">
                     <div className="flex-1 min-w-0">
-                      <div className="text-label-secondary text-captionMedium mb-1">{linkItem.relatedTo}</div>
+                      <div className="text-muted-foreground text-captionMedium mb-1">{linkItem.relatedTo}</div>
                       <div className="text-systemPink group-hover:text-systemPink/80 transition-colors duration-200 text-bodyRegular truncate">
                         {linkItem.link}
                       </div>
                     </div>
-                    <LinkIcon className="w-4 h-4 text-label-secondary group-hover:text-systemPink transition-colors duration-200 flex-shrink-0 ml-3" />
+                    <LinkIcon className="w-4 h-4 text-muted-foreground group-hover:text-systemPink transition-colors duration-200 flex-shrink-0 ml-3" />
                   </div>
                 </a>
               ))}

@@ -10,10 +10,10 @@ export default async function List({ cursor, tags }: { cursor?: string; tags: st
   return (
     <>
       {!cursor && (
-        <div className="pt-4 bg-systemBackground-secondary rounded-lg">
-          <p className="text-label-secondary text-captionMedium">
-            총 <span className="font-semibold text-label-primary">{result.pagination.totalCount}</span>개의 안티패턴이
-            검색되었습니다.
+        <div className="pt-4 bg-muted rounded-lg">
+          <p className="text-muted-foreground dark:text-[#EEEEEE] text-captionMedium">
+            총 <span className="font-semibold text-foreground dark:text-[#EEEEEE]">{result.pagination.totalCount}</span>
+            개의 안티패턴이 검색되었습니다.
           </p>
         </div>
       )}

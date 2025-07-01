@@ -10,10 +10,10 @@ export default function ThemeToggle() {
   if (typeof window === "undefined") {
     return (
       <button
-        className="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
-        aria-label="테마 전환"
+        disabled
+        className="w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 flex items-center justify-center"
       >
-        <Moon className="w-5 h-5 text-text-primary" />
+        <Sun className="w-4 h-4" />
       </button>
     );
   }
@@ -21,14 +21,10 @@ export default function ThemeToggle() {
   return (
     <button
       onClick={toggleTheme}
-      className="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+      className="w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors flex items-center justify-center"
       aria-label={theme === "light" ? "다크모드로 전환" : "라이트모드로 전환"}
     >
-      {theme === "light" ? (
-        <Moon className="w-5 h-5 text-text-primary" />
-      ) : (
-        <Sun className="w-5 h-5 text-semantic-warning" />
-      )}
+      {theme === "dark" ? <Moon className="w-4 h-4" /> : <Sun className="w-4 h-4" />}
     </button>
   );
 }

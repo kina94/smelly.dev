@@ -18,10 +18,10 @@ export default function ErrorMessage({ message }: { message: string }) {
           </div>
 
           {/* 제목 */}
-          <h3 className="text-lg font-semibold text-black mb-2">오류가 발생했습니다</h3>
+          <h3 className="text-2xl font-semibold text-foreground dark:text-[#EEEEEE] mb-2">오류가 발생했습니다</h3>
 
           {/* 에러 메시지 */}
-          <p className="text-semantic-error mb-4 text-sm">{message}</p>
+          <p className="text-destructive mb-4 text-sm">{message}</p>
         </div>
 
         {/* 새로고침 버튼 */}

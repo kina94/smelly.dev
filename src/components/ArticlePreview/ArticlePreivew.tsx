@@ -13,10 +13,14 @@ export default function ArticlePreview({ antipattern }: { antipattern: Antipatte
       href={`/antipatterns/${antipattern.id || ""}`}
       prefetch={true}
     >
-      <span className="text-label-secondary text-captionSmall">{date}</span>
+      <span className="text-muted-foreground dark:text-[#EEEEEE] text-captionSmall">{date}</span>
       <div className="flex flex-col gap-2">
-        <h3 className="text-label-primary text-primary break-words">{antipattern.title || "제목 없음"}</h3>
-        <span className="text-label-secondary text-bodyRegular line-clamp-2">{antipattern.summary || "요약 없음"}</span>
+        <h3 className="text-foreground dark:text-[#EEEEEE] text-primary break-words">
+          {antipattern.title || "제목 없음"}
+        </h3>
+        <span className="text-muted-foreground dark:text-[#EEEEEE] text-bodyRegular line-clamp-2">
+          {antipattern.summary || "요약 없음"}
+        </span>
       </div>
       {/* Tags */}
       <div className="flex flex-wrap gap-2 mt-3 justify-between">

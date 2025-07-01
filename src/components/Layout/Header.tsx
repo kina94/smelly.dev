@@ -30,7 +30,7 @@ export default function Header() {
         </Link>
 
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex gap-1 items-center">
+        <nav className="hidden md:flex gap-3 items-center">
           {NAVIGATION_TABS.map((tab) => {
             const isActive = activeTab === tab.id;
 
@@ -40,7 +40,9 @@ export default function Header() {
                 prefetch={true}
                 href={tab.href}
                 className={`flex items-center space-x-1 px-2 py-1.5 rounded-lg transition-colors ${
-                  isActive ? "text-systemPink" : "text-gray-600 hover:text-gray-500"
+                  isActive
+                    ? "text-systemPink"
+                    : "text-gray-600 hover:text-gray-500 dark:text-[#EEEEEE] dark:hover:text-[#EEEEEE]/80"
                 }`}
               >
                 <span className="text-sm font-medium">{tab.label}</span>
@@ -52,20 +54,24 @@ export default function Header() {
             href="https://github.com/kina94/smelly.dev"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center justify-center w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors"
+            className="flex items-center justify-center w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 transition-colors"
             title="GitHub"
           >
-            <Github size={16} className="text-gray-600" />
+            <Github size={16} className="text-gray-600 dark:text-[#EEEEEE]" />
           </a>
         </nav>
 
         {/* Mobile Hamburger Button */}
         <button
           onClick={toggleMenu}
-          className="md:hidden flex items-center justify-center w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors"
+          className="md:hidden flex items-center justify-center w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 transition-colors"
           aria-label="메뉴 열기"
         >
-          {isMenuOpen ? <X size={16} className="text-gray-600" /> : <Menu size={16} className="text-gray-600" />}
+          {isMenuOpen ? (
+            <X size={16} className="text-gray-600 dark:text-[#EEEEEE]" />
+          ) : (
+            <Menu size={16} className="text-gray-600 dark:text-[#EEEEEE]" />
+          )}
         </button>
       </div>
 
@@ -77,14 +83,14 @@ export default function Header() {
       >
         <nav className="flex flex-col py-4">
           <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100 dark:border-gray-700">
-            <span className="text-sm font-medium text-gray-600 dark:text-gray-300">테마</span>
+            <span className="text-sm font-medium text-gray-600 dark:text-[#EEEEEE]">테마</span>
             <ThemeToggle />
           </div>
           <a
             href="https://github.com/kina94/smelly.dev"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-2 px-4 py-3 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+            className="flex items-center gap-2 px-4 py-3 text-gray-600 dark:text-[#EEEEEE] hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
             onClick={closeMenu}
           >
             <Github size={16} />
@@ -101,7 +107,7 @@ export default function Header() {
                 className={`flex items-center px-4 py-3 transition-colors ${
                   isActive
                     ? "text-systemPink bg-systemPink/5 dark:bg-systemPink/10"
-                    : "text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
+                    : "text-gray-600 dark:text-[#EEEEEE] hover:bg-gray-100 dark:hover:bg-gray-800"
                 }`}
                 onClick={closeMenu}
               >
