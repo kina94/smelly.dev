@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { Footer, Header } from "@/components/Layout";
 import GoogleAnalytics from "@/widgets/GoogleAnalytics";
+import Providers from "@/components/Providers";
 
 const pretendard = localFont({
   src: "./fonts/PretendardVariable.woff2",
@@ -48,12 +49,16 @@ export default function RootLayout({
       <head>
         <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS || ""} />
       </head>
-      <body className={`${pretendard.className} flex flex-col min-h-screen`}>
-        <Header />
-        <main className="mt-20 flex-1">
-          <div className="max-w-4xl mx-auto px-4 py-8 mb-8 h-full flex flex-col overflow-hidden">{children}</div>
-        </main>
-        <Footer />
+      <body
+        className={`${pretendard.className} flex flex-col min-h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100`}
+      >
+        <Providers>
+          <Header />
+          <main className="mt-20 flex-1">
+            <div className="max-w-4xl mx-auto px-4 py-8 mb-8 h-full flex flex-col overflow-hidden">{children}</div>
+          </main>
+          <Footer />
+        </Providers>
       </body>
     </html>
   );

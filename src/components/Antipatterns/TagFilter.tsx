@@ -75,7 +75,7 @@ export default function TagFilter({ selectedTags }: { selectedTags: string[] }) 
                   className={`px-3 py-1 rounded-full text-sm font-medium transition-colors ${
                     selectedTags.includes(tag)
                       ? "bg-systemPink text-white"
-                      : "bg-white text-captionSmall text-zinc-600 hover:bg-gray-100 outline outline-1 outline-systemGray-4"
+                      : "bg-white text-captionSmall text-zinc-600 hover:bg-gray-100 outline outline-1 outline-gray-300"
                   }`}
                 >
                   {tag}

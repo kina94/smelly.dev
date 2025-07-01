@@ -13,7 +13,7 @@ export default function BackButton() {
   return (
     <button
       onClick={handleBack}
-      className="flex items-center gap-2 text-captionRegular mb-4 text-gray-600 hover:text-gray-500"
+      className="flex items-center gap-2 text-captionRegular mb-4 text-text-secondary hover:text-text-tertiary"
     >
       <svg
         width="16"
