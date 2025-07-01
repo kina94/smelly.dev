@@ -1,12 +1,12 @@
 "use client";
 
-import { useTheme } from "@/shared/contexts/ThemeContext";
 import { prism } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { stripMarkdownCodeBlock } from "@/utils/etc";
 import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { useTheme } from "next-themes";
 
-export default function CodeBox({ code }: { code: string }) {
+export default function CodeRenderer({ code }: { code: string }) {
   const { theme } = useTheme();
 
   return (

@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import { getActiveTab, NAVIGATION_TABS } from "@/utils/navigation";
 import Link from "next/link";
 import { Github, Menu, X } from "lucide-react";
-import ThemeToggle from "@/components/ThemeToggle";
+import { ThemeToggle } from "@/widgets";
 
 export default function Header() {
   const pathname = usePathname();

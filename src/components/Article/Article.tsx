@@ -5,7 +5,7 @@ import React from "react";
 import { Badge } from "@/shared/ui";
 import { MarkdownRenderer } from "@/widgets";
 import { Code2, Link as LinkIcon } from "lucide-react";
-import CodeBox from "./CodeBox";
+import { CodeRenderer } from "@/widgets";
 
 export default function Article({ antipattern }: { antipattern: Antipattern }) {
   const date = formatDate(antipattern.updatedAt);
@@ -98,7 +98,7 @@ export default function Article({ antipattern }: { antipattern: Antipattern }) {
             <Code2 className="text-systemRed" />
             <h2 className="text-foreground dark:text-[#EEEEEE] text-primary pb-1">Before Code (Bad)</h2>
           </div>
-          <CodeBox code={antipattern.beforeCode} />
+          <CodeRenderer code={antipattern.beforeCode} />
         </div>
 
         <div className="flex flex-col mb-8">
@@ -106,7 +106,7 @@ export default function Article({ antipattern }: { antipattern: Antipattern }) {
             <Code2 className="text-systemGreen" />
             <h2 className="text-foreground dark:text-[#EEEEEE] text-primary pb-1">After Code (Good)</h2>
           </div>
-          <CodeBox code={antipattern.afterCode} />
+          <CodeRenderer code={antipattern.afterCode} />
         </div>
 
         {/* Links Section */}
