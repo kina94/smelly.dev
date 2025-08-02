@@ -232,7 +232,7 @@ const generateAndSaveAntipattern = async () => {
     // 3. AI 프롬프트 생성 및 호출
     console.log("🤖 AI에게 안티패턴 생성 요청 중...");
     const prompt = await createPrompt(existingAntipatterns, overusedTags);
-    const response = await ai.models.generateContent({ model: "gemini-2.5-flash", contents: prompt });
+    const response = await ai.models.generateContent({ model: "gemini-2.0-flash", contents: prompt });
     const responseText = response.text;
 
     console.log("AI 응답 받음", responseText);
